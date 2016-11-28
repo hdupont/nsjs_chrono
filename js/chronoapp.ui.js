@@ -5,6 +5,9 @@ chronoapp.ui = (function() {
 	
 	var _minutesField = document.getElementById("minutes");
 	var _secondsField = document.getElementById("seconds");
+	var _milliseconds = document.getElementById("milliseconds");
+	
+	
 	
 	function _twoDigits(num) {
 		return (num < 10) ? ("0" + num) : ("" + num) 
@@ -26,6 +29,7 @@ chronoapp.ui = (function() {
 		stopState: function() {
 			_minutesField.innerHTML = "00";
 			_secondsField.innerHTML = "00";
+			_milliseconds.innerHTML = "00";
 			this.showStartButton();
 			this.hidePauseButton();
 			this.hideStopButton();
@@ -62,9 +66,10 @@ chronoapp.ui = (function() {
 			_pauseButton.style.display = "";
 			_stopButton.style.display = "";
 		},
-		update: function(seconds, minutes) {
-			_secondsField.innerHTML = _twoDigits(seconds);
+		update: function(minutes, seconds, milliseconds) {
 			_minutesField.innerHTML = _twoDigits(minutes);
+			_secondsField.innerHTML = _twoDigits(seconds);
+			_milliseconds.innerHTML = _twoDigits(milliseconds);
 		}
 	};
 })();
