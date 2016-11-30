@@ -7,24 +7,56 @@ chronoapp.ui = (function() {
 	var _secondsField = document.getElementById("seconds");
 	var _milliseconds = document.getElementById("milliseconds");
 	
-	
-	
+	// NB. En keydown les codes correspondent aux lettres majuscules.
+	var _keyCode = {
+		"enter": 13,
+		"d": 100,
+		"space": 32,
+		"P": 80,
+		"c": 99,
+		"k": 107,
+		"del": 46,
+		"backspace": 8
+	};
+
+	var _startKeys = [_keyCode.enter, _keyCode.s];
+	var _pauseKeys = [_keyCode.space, _keyCode.P];
+	var _continueKeys = [_keyCode.space, _keyCode.p, _keyCode.c];
+	var _stopKeys = [_keyCode.k, _keyCode.del, _keyCode.backspace];
+
 	function _twoDigits(num) {
 		return (num < 10) ? ("0" + num) : ("" + num) 
+	}
+	
+	function _addKeysListenerToBody(keys, listerner) {
+		document.body.addEventListener("keydown", function(event) {
+			if (keys.indexOf(event.keyCode) !== -1) {
+				listerner();
+			}
+		});
 	}
 	
 	return {
 		init: function() {
 			this.stopState();
 		},
-		addStartButtonListener: function(clickListener) {
-			_startButton.addEventListener("click", clickListener);
+		addStartButtonListener: function(start) {
+			_startButton.addEventListener("click", start);
 		},
-		addPauseButtonListener: function(clickListener) {
-			_pauseButton.addEventListener("click", clickListener);
+		addStartKeysListener: function(start) {
+			_addKeysListenerToBody(_startKeys, start);
+		}, 
+		addPauseButtonListener: function(pause) {
+			_pauseButton.addEventListener("click", pause);
 		},
-		addStopButtonListener: function(clickListener) {
-			_stopButton.addEventListener("click", clickListener);
+		addPauseKeysListener: function(pause) {
+			_addKeysListenerToBody(_pauseKeys, pause);
+		}, 
+		addStopButtonListener: function(stop) {
+			_stopButton.addEventListener("click", stop);
+		},
+		addStopKeysListener: function(stop) {
+			_addKeysListenerToBody(_stopKeys, stop);
 		},
 		stopState: function() {
 			_minutesField.innerHTML = "00";

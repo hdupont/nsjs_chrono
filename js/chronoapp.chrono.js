@@ -2,14 +2,31 @@ chronoapp.chrono = (function() {
 	
 	var _chrono = 0;
 	var _intervalId = null; 
+	var _onChangeListener = null;
 	
 	function _inc() {
 		_chrono++;
 	}
 	
+	function _resetInterval() {
+		clearInterval(_intervalId);
+		_intervalId = null;
+	}
+	
+	function _getMinutes() {
+		return Math.floor(_chrono / 100 / 60);
+	}
+	
+	function _getSeconds() {
+		return Math.floor(_chrono / 100 % 60);
+	}
+	
+	function _getMilliseconds() {
+		return Math.floor(_chrono % 100);
+	}
+	
 	return {
-		_onChangeListener: null,
-		start: function() {
+		start: function() {		
 			var that = this;
 			_intervalId = setInterval(function(){
 				that._inc();
@@ -17,26 +34,20 @@ chronoapp.chrono = (function() {
 		},
 		_inc: function() {
 			_chrono++;
-			this._onChangeListener(this.getMinutes(), this.getSeconds(), this.getMilliseconds());
+			_onChangeListener(_getMinutes(), _getSeconds(), _getMilliseconds());
 		},
 		pause: function() {
-			clearInterval(_intervalId);
+			_resetInterval();
 		},
 		stop: function() {
-			clearInterval(_intervalId);
+			_resetInterval();
 			_chrono = 0;
 		},
-		getMinutes: function() {
-			return Math.floor(_chrono / 100 / 60);
-		},
-		getSeconds: function() {
-			return Math.floor(_chrono / 100 % 60);
-		},
-		getMilliseconds: function() {
-			return Math.floor(_chrono % 100);
+		isRunning: function() {
+			return _intervalId !== null;
 		},
 		addOnChangeListener: function(fun) {
-			this._onChangeListener = fun;
+			_onChangeListener = fun;
 		}
 	};
 })();
