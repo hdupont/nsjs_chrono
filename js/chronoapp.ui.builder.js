@@ -7,26 +7,12 @@ chronoapp.ui.builder = (function() {
 		
 		return title;
 	}
-	
-	function buildCommandsDescription() {
-		
-		function appendTextLi(ul, text) {
-			var li = document.createElement("li");
-			var liText = document.createTextNode(text);
-			li.appendChild(liText);
-			
-			ul.appendChild(li);
-		}
-		
+
+	function buildDescription() {
 		var descriptionContainer = document.createElement("div");
-		var description = document.createTextNode("Utilisez le chrono avec le clavier :");
+		descriptionContainer.style.marginBottom = "1em";
+		var description = document.createTextNode("Le chrono peut aussi s'utiliser avec le clavier. Les touches sont indiquées dans les boutons.");
 		descriptionContainer.appendChild(description);
-		
-		var commandsDescription = document.createElement("ul");
-		appendTextLi(commandsDescription, "Démarrer/Reprendre: 'Entrer' ou 'd'");
-		appendTextLi(commandsDescription, "Pause: 'Espace' ou 'p'");
-		appendTextLi(commandsDescription, "Stop: 'Suppr' ou 'Retour arrière'");
-		descriptionContainer.appendChild(commandsDescription);
 		
 		return descriptionContainer;
 	}
@@ -41,7 +27,20 @@ chronoapp.ui.builder = (function() {
 	
 	function buildButtonsMenu() {
 		
-		function appendButton(div, buttonLabel, id, color) {
+		function addButtonLabel(button, label, sublabel) {
+			var labelDiv = document.createElement("div");
+			labelDiv.style.fontSize = "2em";
+			labelDiv.innerHTML = label;
+			
+			var sublabelDiv = document.createElement("div");
+			sublabelDiv.style.fontSize = "1em";
+			sublabelDiv.innerHTML = sublabel;
+			
+			button.appendChild(labelDiv);
+			button.appendChild(sublabelDiv);
+		}
+		
+		function appendButton(buttonsContainer, id, color, label, sublabel) {
 			var button = document.createElement("button");
 			button.setAttribute("id", id);
 			
@@ -57,21 +56,17 @@ chronoapp.ui.builder = (function() {
 			button.style.marginRight = "5px";
 			button.style.borderRadius = "8px";
 			
-			var buttonText = document.createTextNode(buttonLabel);
-			button.appendChild(buttonText);
+			addButtonLabel(button, label, sublabel);
 			
-			div.appendChild(button);
+			buttonsContainer.appendChild(button);
 		}
 		
-		var menuDiv = document.createElement("div");
-		
-		var description = document.createTextNode("Utilisez le chrono avec des boutons :");
-		menuDiv.appendChild(description);
-		
 		var buttonsContainer = document.createElement("div");
-		appendButton(buttonsContainer, "Démarrer", "start", "#4CAF50"); // vert
-		appendButton(buttonsContainer, "Pause", "pause", "#FFA500"); // orange
-		appendButton(buttonsContainer, "Stop", "stop", "#f44336"); // rouge
+		appendButton(buttonsContainer, "start", "#4CAF50", "Démarrer", "\"Entrer\" ou \"d\""); // vert
+		appendButton(buttonsContainer, "pause", "#FFA500", "Pause", "\"Espace\" ou \"p\""); // orange
+		appendButton(buttonsContainer, "stop", "#f44336", "Stop", "\"Suppr\" ou \"Retour arrière\""); // rouge
+		
+		var menuDiv = document.createElement("div");
 		menuDiv.appendChild(buttonsContainer);
 		
 
@@ -87,7 +82,7 @@ chronoapp.ui.builder = (function() {
 			var appUiContainer = document.createElement("div");
 			appUiContainer.appendChild(buildTitle());
 			appUiContainer.appendChild(buildChronoDisplay());
-			appUiContainer.appendChild(buildCommandsDescription());
+			appUiContainer.appendChild(buildDescription());
 			appUiContainer.appendChild(buildButtonsMenu());
 			
 			return appUiContainer;
