@@ -1,11 +1,12 @@
 chronoapp.ui = (function() {
-	var _startButton = document.getElementById("start");
-	var _pauseButton = document.getElementById("pause");
-	var _stopButton = document.getElementById("stop");
 	
-	var _minutesField = document.getElementById("minutes");
-	var _secondsField = document.getElementById("seconds");
-	var _milliseconds = document.getElementById("milliseconds");
+	var _startButton = null;
+	var _pauseButton = null;
+	var _stopButton = null;
+	
+	var _minutesField = null;
+	var _secondsField = null;
+	var _milliseconds = null;
 	
 	// NB. En keydown les codes correspondent aux lettres majuscules.
 	var _keyCode = {
@@ -13,15 +14,13 @@ chronoapp.ui = (function() {
 		"d": 100,
 		"space": 32,
 		"P": 80,
-		"c": 99,
 		"k": 107,
 		"del": 46,
 		"backspace": 8
 	};
 
-	var _startKeys = [_keyCode.enter, _keyCode.s];
+	var _startKeys = [_keyCode.enter, _keyCode.d];
 	var _pauseKeys = [_keyCode.space, _keyCode.P];
-	var _continueKeys = [_keyCode.space, _keyCode.p, _keyCode.c];
 	var _stopKeys = [_keyCode.k, _keyCode.del, _keyCode.backspace];
 
 	function _twoDigits(num) {
@@ -36,8 +35,28 @@ chronoapp.ui = (function() {
 		});
 	}
 	
+	function appendUi(appNode, appUiContainer) {
+		appNode.innerHTML = appUiContainer.innerHTML;
+	}
+	
 	return {
-		init: function() {
+		init: function(appNodeId) {
+			var appNode = document.getElementById(appNodeId);
+			
+			// On construit l'élément DOM de l'UI.
+			_appNode = this.builder.buildDomElement();
+			
+			// On injecte l'élément DOM de l'UI dans le dom.
+			appendUi(appNode, _appNode);
+			
+			// On initialise les attributs de l'UI.
+			_startButton = document.getElementById("start");
+			_pauseButton = document.getElementById("pause");
+			_stopButton = document.getElementById("stop");
+			_minutesField = document.getElementById("minutes");
+			_secondsField = document.getElementById("seconds");
+			_milliseconds = document.getElementById("milliseconds");
+			
 			this.stopState();
 		},
 		addStartButtonListener: function(start) {

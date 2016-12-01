@@ -21,7 +21,7 @@
 		ui.stopState();
 	}
 	
-	ui.init();
+	ui.init("chrnapp");
 	ui.addStartButtonListener(start);
 	ui.addStartKeysListener(start);
 	

@@ -7,27 +7,21 @@
 <body>
 
 <main>
-	<p>Ceci est un chronomètre. Vous disposez d'une interface graphique (via les boutons) ou d'une interface clavier. Les touches sont:</p>
-	<ul>
-			<li>Démarrer/Reprendre: Entrée, d</li>
-			<li>Pause: Espace, p</li>
-			<li>Arrêter: Suppr, Retour Arrière</li>
-		</ul>
-	<div>
-		<span id="minutes"></span>:<span id="seconds"></span>:<span id="milliseconds"></span>
-	</div>
-	<div>
-		<button id="start">Démarrer</button>
-		<button id="pause">Pause</button>
-		<button id="stop">Stop</button>
-	</div>
+	<div id="chrnapp"></div>
 </main>
 
+<!-- Le namespace -->
 <script src=js/chronoapp.js></script>
 
+ <!-- L'objet "métier": le chrono -->
 <script src=js/chronoapp.chrono.js></script>
-<script src=js/chronoapp.ui.js></script>
 
+<!-- L'UI -->
+<script src=js/chronoapp.ui.js></script>
+<script src=js/chronoapp.ui.builder.js></script>
+
+<!-- main: le point d'entrée -->
 <script src=js/main.js></script>
+
 </body>
 </html>
