@@ -11,17 +11,17 @@ chronoapp.ui = (function() {
 	// NB. En keydown les codes correspondent aux lettres majuscules.
 	var _keyCode = {
 		"enter": 13,
-		"d": 100,
+		"D": 68,
 		"space": 32,
 		"P": 80,
-		"k": 107,
+		"K": 75,
 		"del": 46,
 		"backspace": 8
 	};
 
-	var _startKeys = [_keyCode.enter, _keyCode.d];
+	var _startKeys = [_keyCode.enter, _keyCode.D];
 	var _pauseKeys = [_keyCode.space, _keyCode.P];
-	var _stopKeys = [_keyCode.k, _keyCode.del, _keyCode.backspace];
+	var _stopKeys = [_keyCode.K, _keyCode.del, _keyCode.backspace];
 
 	function _twoDigits(num) {
 		return (num < 10) ? ("0" + num) : ("" + num) 
@@ -37,6 +37,35 @@ chronoapp.ui = (function() {
 	
 	function appendUi(appNode, appUiContainer) {
 		appNode.innerHTML = appUiContainer.innerHTML;
+	}
+	
+	function hideStartButton() {
+		_startButton.style.display = "none";
+	}
+	
+	function hidePauseButton() {
+		_pauseButton.style.display = "none";
+	}
+	
+	function hideStopButton() {
+		_stopButton.style.display = "none";
+	}
+	
+	function showStartButton() {
+		_startButton.style.display = "";
+	}
+	
+	function showPauseButton() {
+		_pauseButton.style.display = "";
+	}
+	
+	function showStopButton() {
+		_stopButton.style.display = "";
+	}
+	
+	function showPauseAndStopButtons() {
+		_pauseButton.style.display = "";
+		_stopButton.style.display = "";
 	}
 	
 	return {
@@ -81,41 +110,19 @@ chronoapp.ui = (function() {
 			_minutesField.innerHTML = "00";
 			_secondsField.innerHTML = "00";
 			_milliseconds.innerHTML = "00";
-			this.showStartButton();
-			this.hidePauseButton();
-			this.hideStopButton();
+			showStartButton();
+			hidePauseButton();
+			hideStopButton();
 		},
 		pauseState: function() {
-			this.showStartButton();
-			this.hidePauseButton();
-			this.showStopButton();
+			showStartButton();
+			hidePauseButton();
+			showStopButton();
 		},
 		startState: function() {
-			this.hideStartButton();
-			this.showPauseButton();
-			this.showStopButton();
-		},
-		hideStartButton: function() {
-			_startButton.style.display = "none";
-		},
-		hidePauseButton: function() {
-			_pauseButton.style.display = "none";
-		},
-		hideStopButton: function() {
-			_stopButton.style.display = "none";
-		},
-		showStartButton: function() {
-			_startButton.style.display = "";
-		},
-		showPauseButton: function() {
-			_pauseButton.style.display = "";
-		},
-		showStopButton: function() {
-			_stopButton.style.display = "";
-		},
-		showPauseAndStopButtons: function() {
-			_pauseButton.style.display = "";
-			_stopButton.style.display = "";
+			hideStartButton();
+			showPauseButton();
+			showStopButton();
 		},
 		update: function(minutes, seconds, milliseconds) {
 			_minutesField.innerHTML = _twoDigits(minutes);
