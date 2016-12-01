@@ -70,7 +70,7 @@ chronoapp.ui.builder = (function() {
 		
 		var buttonsContainer = document.createElement("div");
 		appendButton(buttonsContainer, "Démarrer", "start", "#4CAF50"); // vert
-		appendButton(buttonsContainer, "Pause", "pause", "#008CBA"); // bleu
+		appendButton(buttonsContainer, "Pause", "pause", "#FFA500"); // orange
 		appendButton(buttonsContainer, "Stop", "stop", "#f44336"); // rouge
 		menuDiv.appendChild(buttonsContainer);
 		
