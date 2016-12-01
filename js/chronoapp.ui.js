@@ -69,6 +69,13 @@ chronoapp.ui = (function() {
 	}
 	
 	return {
+		
+		/**
+		 * Ajoute l'interface utilisateur (initialisée) à l'élément du DOM dont
+		 * l'id est passée en paramètre.
+		 * 
+		 * @param {string} appNodeId L'id de l'élément du DOM devant contenir l'interface utilisateur.
+		 */
 		init: function(appNodeId) {
 			var appNode = document.getElementById(appNodeId);
 			
