@@ -39,27 +39,27 @@ chronoapp.ui = (function() {
 		appNode.innerHTML = appUiContainer.innerHTML;
 	}
 	
-	function hideStartButton() {
+	function _hideStartButton() {
 		_startButton.style.display = "none";
 	}
 	
-	function hidePauseButton() {
+	function _hidePauseButton() {
 		_pauseButton.style.display = "none";
 	}
 	
-	function hideStopButton() {
+	function _hideStopButton() {
 		_stopButton.style.display = "none";
 	}
 	
-	function showStartButton() {
+	function _showStartButton() {
 		_startButton.style.display = "";
 	}
 	
-	function showPauseButton() {
+	function _showPauseButton() {
 		_pauseButton.style.display = "";
 	}
 	
-	function showStopButton() {
+	function _showStopButton() {
 		_stopButton.style.display = "";
 	}
 	
@@ -110,19 +110,19 @@ chronoapp.ui = (function() {
 			_minutesField.innerHTML = "00";
 			_secondsField.innerHTML = "00";
 			_milliseconds.innerHTML = "00";
-			showStartButton();
-			hidePauseButton();
-			hideStopButton();
+			_showStartButton();
+			_hidePauseButton();
+			_hideStopButton();
 		},
 		pauseState: function() {
-			showStartButton();
-			hidePauseButton();
-			showStopButton();
+			_showStartButton();
+			_hidePauseButton();
+			_showStopButton();
 		},
 		startState: function() {
-			hideStartButton();
-			showPauseButton();
-			showStopButton();
+			_hideStartButton();
+			_showPauseButton();
+			_showStopButton();
 		},
 		update: function(minutes, seconds, milliseconds) {
 			_minutesField.innerHTML = _twoDigits(minutes);
