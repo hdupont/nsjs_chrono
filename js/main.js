@@ -5,7 +5,7 @@
  * Un objet UI construit et gère l'interface utilisateur
  * L'UI est mise à jour en fonction de l'état d'un objet chrono.
  */
-(function(chrono, ui) {
+(function(Chrono, ui) {
 	
 	/**
 	 * Démarre le chrono.
@@ -37,6 +37,9 @@
 		ui.stopState();
 	}
 	
+	// Création du chrono.
+	var chrono = new Chrono;
+	
 	// On initialise l'interface utilisateur
 	ui.init("chrnapp");
 	
@@ -51,4 +54,4 @@
 	// Les changements d'état du chrono sont signalés à l'UI.
 	chrono.addOnChangeListener(ui.update);
 	
-})(chronoapp.chrono, chronoapp.ui);
+})(chronoapp.Chrono, chronoapp.ui);
