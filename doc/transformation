@@ -1,0 +1,10 @@
+> Transformation en mode TDD (non reproductible...)
+
+D'abord créer une classe (du nom de la classe de remplacement) vide dans le même fichier et faire un console.log dans le constructeur.
+Tester console.log ok (la classe est bien utilisable).
+Ajouter les attributs et les méthodes composants l'interface publique et les éléments privés.
+Tester (tout compile, on a rien cassé).
+Remplacer l'objet global utilisé dans l'utilisateur par un objet créé à partir de la nouvelle classe.
+Tester.
+"Ajuster."
+Tester.  

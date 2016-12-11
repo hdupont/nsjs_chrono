@@ -1,19 +1,34 @@
-chronoapp.Chrono = (function() {
+// namespace du composant Chrono
+var h_chrono = {};
+
+//---------------
+//class Chrono
+//---------------
+//Un Chrono est chronomètre pouvant indiquer minutes, secondes et millisecondes.
+h_chrono.Chrono = (function() {
 	
 	// public
+	// ------
 	
 	function Chrono() {
 		this._chrono = 0;
 		this._intervalId = null; 
 		this._onChangeListener = null;
 	}
-	Chrono.prototype.start = function() {		
+	Chrono.prototype.start = function() {
+		if (this.isRunning()) {
+			return;
+		}
+		
 		var self = this;
 		self._intervalId = setInterval(function(){
 			_inc(self);
 		}, 10);
 	};
 	Chrono.prototype.pause = function() {
+		if (! this.isRunning()) {
+			return;
+		}
 		_resetInterval(this);
 	};
 	Chrono.prototype.stop = function() {
@@ -28,6 +43,7 @@ chronoapp.Chrono = (function() {
 	};
 	
 	// private
+	// -------
 	
 	function _inc(self) {
 		self._chrono++;
