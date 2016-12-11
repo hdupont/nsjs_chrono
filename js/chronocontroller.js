@@ -19,8 +19,9 @@ chronoapp.ChronoController = (function() {
 		// chrono.
 		// NOTE On place l'appelle dans une fonction anonyme pour conserver le 
 		// bon contexte à l'exécution.
+		var self = this;
 		chrono.addOnChangeListener(function(minutes, secondes, millisecondes) {
-			chronoController.update(minutes, secondes, millisecondes);
+			self.update(minutes, secondes, millisecondes);
 		});
 		
 		// Mise en place des "déclencheurs" d'évènements chrono et
