@@ -1,3 +1,4 @@
+// TODO transformer chrono en classe
 chronoapp.chrono = (function() {
 	
 	var _chrono = 0;
