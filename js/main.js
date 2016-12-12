@@ -3,14 +3,19 @@
  * ou via le clavier.
  */
 (function(Chrono, ChronoController, Ui) {
+	
+	function addChrono() {
+		// Création du chrono.
+		var chrono = new Chrono;
 		
-	// Création du chrono.
-	var chrono = new Chrono;
+		// Création de l'interface utilisateur.
+		var ui = new Ui();
+		
+		// Création du controlleur.
+		var chronoController = new ChronoController(chrono, ui);		
+	}
 	
-	// Création de l'interface utilisateur.
-	var ui = new Ui();
-	
-	// Création du controlleur.
-	var chronoController = new ChronoController(chrono, ui);
+	addChrono();
+	addChrono();
 	
 })(h_chrono.Chrono, chronoapp.ChronoController, chronoapp.Ui);
