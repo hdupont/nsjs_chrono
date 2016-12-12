@@ -8,3 +8,32 @@ Remplacer l'objet global utilisé dans l'utilisateur par un objet créé à partir d
 Tester.
 "Ajuster."
 Tester.  
+
+> Transformation d'un handler (une fonction) en action
+
+On sépare son nom de son code
+
+Le handler
+
+<code>
+// Arrête le chrono.
+function stopChrono() {
+	self._chrono.stop();
+	self._ui.switchToStopState();
+}
+</code>
+
+devient l'action
+
+<code>
+// Arrête le chrono.
+{
+	name: "stopchrono",
+	handler: function stopChrono() {
+		self._chrono.stop();
+		self._ui.switchToStopState();
+	}
+}
+</code>
+
+Ce qui en fait une action c'est qu'elle est regroupée avec un ensemble d'élement qui son sémantiquement des actions dans la conception.
