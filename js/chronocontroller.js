@@ -73,21 +73,18 @@ chronoapp.ChronoController = (function() {
 		});
 		
 		// Mise en place des "déclencheurs" d'évènements chrono et
-		// initialisation de l'interface utilisateur.
-		// NOTE Les évènements chrono sont: démarrer, mettre en pause et
-		// arrêter le chrono.
-		// NOTE L'ajout des écouteurs se fait dans un callback pour les raisons
-		// évoquées dans la doc de chronoui.
-		var self = this;
-		ui.appendToDom(function() {
-			_actions.forEach(function(actn) {
-				var handler = function() {
-					actn.handler(self);
-				};
-				_addTrigger(self, actn.name, handler, actn.keyTriggers)
-			});
-			ui.init();
-		})
+		_actions.forEach(function(actn) {
+			var handler = function() {
+				actn.handler(self);
+			};
+			_addTrigger(self, actn.name, handler, actn.keyTriggers)
+		});
+
+		// Initialisation de l'interface utilisateur.
+		ui.init();
+		
+		// Ajout de l'interface utilisateur au DOM
+		ui.appendToDom("chrnapp")
 	}
 	
 	/**

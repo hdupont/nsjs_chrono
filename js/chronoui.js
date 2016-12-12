@@ -3,46 +3,20 @@
 // --------
 // Ui est l'interface web à travers laquelle l'utilisateur intéragit avec le
 // chrono. 
-//
-// NB
-// Ui est manipulé aux travers des getters qui attaquent directement le DOM.
-// Cette mécanique a été instaurée pour être assuré que les écouteurs
-// d'évènements soient ajoutés. En effet, on a la garantie qu'ils sont ajoutés
-// aux éléments présent dans le DOM, mais rien n'est sur pour les éléments
-// créés dynamiquement et ajouté au DOM par la suite.
-// Pour être sur que les écouteurs sont effectivement ajoutés après l'insertion
-// dans le DOM, les écouteurs sont ajoutés dans un callback passé à la fonction
-// qui insère dans le DOM et qui appelle le callback une fois l'insertion 
-// effectuée.
 chronoapp.Ui = (function() {
-	
-	// static
-	// ------
-	
-	// TODO finir de gérer les ids pour pouvoir avoir plusieurs
-	// instance de chrono tournant en même dans une même page.
-	var _instanceId = 0;
-	var _IdPrefix = "chrn_";
-	var _ids = {
-		START_BUTTON: "startbutton",
-		PAUSE_BUTTON: "pausebutton",
-		STOP_BUTTON: "stopbutton",
-		MINUTES_FIELD: "minutesfields",
-		SECONDES_FIELD: "secondesfields",
-		MILLISECONDES_FIELD: "millisecondesfields"
-	};
 	
 	// public
 	// ------
 
-	function Ui(appNodeId) {
-		this._appContainerId = appNodeId;
-		this._instanceId = _instanceId++;
-		
+	function Ui() {
 		this._actionsMenu = buildActionsMenu(self);
-		this._appUiElement = buildDomElement(this);
+		this._startButton = _buildActionButton("#4CAF50", "Démarrer", "\"Entrer\" ou \"d\""); // vert;
+		this._pauseButton = _buildActionButton("#FFA500", "Pause", "\"Espace\" ou \"p\""); // orange;
+		this._stopButton = _buildActionButton("#f44336", "Stop", "\"Suppr\" ou \"Retour arrière\""); // rouge;
 		
-		
+		this._minutesField = _buildChronoField();
+		this._secondsField = _buildChronoField();
+		this._milliseconds = _buildChronoField();
 	}
 	
 	// NB
@@ -50,22 +24,19 @@ chronoapp.Ui = (function() {
 	// choisi de simuler un click plutôt... que de faire autre chose...
 	Ui.prototype.init = function() {
 		// On met l'UI dans son état initial.
-		_getStopButton().click();
-
-		// On montre l'UI.
-		appUiContainer.style.display = "none";
+		this._stopButton.click();
 	};
 	
-	Ui.prototype.appendToDom = function(callback) {
-		var appNode = document.getElementById(this._appContainerId);
-		appendUi(appNode, this._appUiElement);
-		callback();
+	Ui.prototype.appendToDom = function(appNodeId) {
+		var appNode = document.getElementById(appNodeId);
+		var appUi = buildDomElement(this);
+		appNode.appendChild(appUi);
 	}
 	
 	Ui.prototype.switchToStopState = function() {
-		_setMinutesField("00");
-		_setSecondsField("00");
-		_setMillisecondesField("00");
+		this._minutesField.innerHTML = "00";
+		this._secondsField.innerHTML = "00";
+		this._milliseconds.innerHTML = "00";
 		_showStartButton(this);
 		_hidePauseButton(this);
 		_hideStopButton(this);
@@ -93,9 +64,9 @@ chronoapp.Ui = (function() {
 			return (num < 10) ? ("0" + num) : ("" + num) 
 		}
 		
-		_setMinutesField( _twoDigits(minutes));
-		_setSecondsField(_twoDigits(seconds));
-		_setMillisecondesField(_twoDigits(milliseconds));
+		this._minutesField.innerHTML = _twoDigits(minutes);
+		this._secondsField.innerHTML = _twoDigits(seconds);
+		this._milliseconds.innerHTML = _twoDigits(milliseconds);
 	};
 
 	Ui.prototype.setTrigger = function(name, handler) {
@@ -103,13 +74,13 @@ chronoapp.Ui = (function() {
 		// TODO supprimer la répétition du nom des actions
 		// Répétée ici et dans le controlleur.
 		if (name === "startchrono") {
-			actionButton = _buildActionButton(_ids.START_BUTTON, "#4CAF50", "Démarrer", "\"Entrer\" ou \"d\""); // vert;
+			actionButton = this._startButton;
 		}
 		else if (name === "pausechrono") {
-			actionButton = _buildActionButton(_ids.PAUSE_BUTTON, "#FFA500", "Pause", "\"Espace\" ou \"p\""); // orange;
+			actionButton = this._pauseButton;
 		}
 		else if (name === "stopchrono") {
-			actionButton = _buildActionButton(_ids.STOP_BUTTON, "#f44336", "Stop", "\"Suppr\" ou \"Retour arrière\""); // rouge;
+			actionButton = this._stopButton;
 		}
 		else {
 			throw new Error("Ui..setTrigger - unknow action: " + name);
@@ -120,70 +91,34 @@ chronoapp.Ui = (function() {
 	
 	// private
 	// -------
-	
-	function _getStartButton() {
-		return document.getElementById(_ids.START_BUTTON);
-	}
-	
-	function _getPauseButton() {
-		return document.getElementById(_ids.PAUSE_BUTTON);
-	}
-	
-	function _getStopButton() {
-		return document.getElementById(_ids.STOP_BUTTON);
-	}
-	
-	function _getMinutesField() {
-		return document.getElementById(_ids.MINUTES_FIELD);
-	}
-	
-	function _getSecondsField() {
-		return document.getElementById(_ids.SECONDES_FIELD);
-	}
-	
-	function _getMillisecondesField() {
-		return document.getElementById(_ids.MILLISECONDES_FIELD);
-	}
-	
-	function _setMinutesField(val) {
-		_getMinutesField().innerHTML = val;
-	}
-	
-	function _setSecondsField(val) {
-		_getSecondsField().innerHTML = val;
-	}
-	
-	function _setMillisecondesField(val) {
-		_getMillisecondesField().innerHTML = val;
-	}
-	
+			
 	function _hideStartButton(self) {
-		_getStartButton().style.display = "none";
+		self._startButton.style.display = "none";
 	}
 	
 	function _hidePauseButton(self) {
-		_getPauseButton().style.display = "none";
+		self._pauseButton.style.display = "none";
 	}
 	
 	function _hideStopButton(self) {
-		_getStopButton().style.display = "none";
+		self._stopButton.style.display = "none";
 	}
 	
 	function _showStartButton(self) {
-		_getStartButton().style.display = "";
+		self._startButton.style.display = "";
 	}
 	
 	function _showPauseButton(self) {
-		_getPauseButton().style.display = "";
+		self._pauseButton.style.display = "";
 	}
 	
 	function _showStopButton(self) {
-		_getStopButton().style.display = "";
+		self._stopButton.style.display = "";
 	}
 	
 	function showPauseAndStopButtons(self) {
-		_getPauseButton().style.display = "";
-		_getStopButton().style.display = "";
+		self._pauseButton.style.display = "";
+		self._stopButton.style.display = "";
 	}
 	
 	/**
@@ -194,17 +129,9 @@ chronoapp.Ui = (function() {
 		appUiContainer.appendChild(buildTitle());
 		appUiContainer.appendChild(buildChronoDisplay(self));
 		appUiContainer.appendChild(buildDescription());
-		appUiContainer.appendChild(buildActionsMenu(self));
-		
-		appUiContainer.style.display = "none";
+		appUiContainer.appendChild(self._actionsMenu);
 		
 		return appUiContainer;
-	}
-	
-	function appendUi(appNode, appUiContainer) {
-		// TODO URGENT Supprimer cette M... c'est probablement ce qui fait sauter
-		// les évènements et qui empêche de conserver nos noeuds en tant qu'attributs.
-		appNode.innerHTML = appUiContainer.innerHTML;
 	}
 	
 	function buildTitle() {
@@ -225,17 +152,13 @@ chronoapp.Ui = (function() {
 	}
 	
 	function buildChronoDisplay(self) {
-		var minutesField = _buildChronoField(_ids.MINUTES_FIELD);
-		var secondsField = _buildChronoField(_ids.SECONDES_FIELD);
-		var milliseconds = _buildChronoField(_ids.MILLISECONDES_FIELD);
-		
 		var chronoDiv = document.createElement("div");
 		chronoDiv.style.fontSize = "4em";
-		chronoDiv.appendChild(minutesField);
+		chronoDiv.appendChild(self._minutesField);
 		chronoDiv.appendChild(document.createTextNode(":"));
-		chronoDiv.appendChild(secondsField);
+		chronoDiv.appendChild(self._secondsField);
 		chronoDiv.appendChild(document.createTextNode(":"));
-		chronoDiv.appendChild(milliseconds);
+		chronoDiv.appendChild(self._milliseconds);
 		
 		return chronoDiv;
 	}
@@ -248,7 +171,7 @@ chronoapp.Ui = (function() {
 		return chronoField;
 	}
 	
-	function _buildActionButton(id, color, label, sublabel) {
+	function _buildActionButton(color, label, sublabel) {
 		
 		function addButtonLabel(button, label, sublabel) {
 			var labelDiv = document.createElement("div");
@@ -264,7 +187,6 @@ chronoapp.Ui = (function() {
 		}
 		
 		var button = document.createElement("button");
-		button.setAttribute("id", id);
 		
 		// Style des boutons
 		button.style.backgroundColor = color; /* Green */
@@ -285,6 +207,7 @@ chronoapp.Ui = (function() {
 	
 	function buildActionsMenu(self) {
 		var menuDiv = document.createElement("div");
+		menuDiv.setAttribute("kind", "actionmenu");
 		return menuDiv;
 	}
 	

@@ -8,7 +8,7 @@
 	var chrono = new Chrono;
 	
 	// Création de l'interface utilisateur.
-	var ui = new Ui("chrnapp");
+	var ui = new Ui();
 	
 	// Création du controlleur.
 	var chronoController = new ChronoController(chrono, ui);
