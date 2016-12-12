@@ -94,29 +94,17 @@ chronoapp.Ui = (function() {
 		// TODO supprimer la répétition du nom des actions
 		// Répétée ici et dans le controlleur.
 		if (name === "startchrono") {
-			this.setStartChronoTrigger(handler);
+			_getStartButton().addEventListener("click", handler);
 		}
 		else if (name === "pausechrono") {
-			this.setPauseChronoTrigger(handler);
+			_getPauseButton().addEventListener("click", handler);;
 		}
 		else if (name === "stopchrono") {
-			this.setStopChronoTrigger(handler);
+			_getStopButton().addEventListener("click", handler);
 		}
 		else {
 			throw new Error("Ui..setTrigger - unknow action: " + name);
 		}
-	};
-	
-	Ui.prototype.setStartChronoTrigger = function(handler) {
-		_getStartButton().addEventListener("click", handler);
-	};
-	
-	Ui.prototype.setPauseChronoTrigger = function(handler) {
-		_getPauseButton().addEventListener("click", handler);
-	};
-	
-	Ui.prototype.setStopChronoTrigger = function(handler) {
-		_getStopButton().addEventListener("click", handler);
 	};	
 	
 	// private
