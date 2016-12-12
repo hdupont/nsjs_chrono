@@ -19,8 +19,7 @@ chronoapp.Ui = (function() {
 		this._milliseconds = _buildChronoField();
 	}
 	
-	// NB
-	// Pour mettre l'interface dans son état initiale (état stop), on a
+	// NOTE Pour mettre l'interface dans son état initiale (état stop), on a
 	// choisi de simuler un click plutôt... que de faire autre chose...
 	Ui.prototype.init = function() {
 		// On met l'UI dans son état initial.
