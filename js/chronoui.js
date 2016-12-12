@@ -124,6 +124,24 @@ chronoapp.Ui = (function() {
 	 * @return {element} Un element div contenant l'UI.
 	 */
 	function buildDomElement(self) {
+		
+		function buildTitle() {
+			var title = document.createElement("h1");
+			var titleText = document.createTextNode("Chrono");
+			title.appendChild(titleText);
+			
+			return title;
+		}
+		
+		function buildDescription() {
+			var descriptionContainer = document.createElement("div");
+			descriptionContainer.style.marginBottom = "1em";
+			var description = document.createTextNode("Le chrono peut aussi s'utiliser avec le clavier. Les touches sont indiquées dans les boutons.");
+			descriptionContainer.appendChild(description);
+			
+			return descriptionContainer;
+		}
+		
 		var appUiContainer = document.createElement("div");
 		appUiContainer.appendChild(buildTitle());
 		appUiContainer.appendChild(buildChronoDisplay(self));
@@ -131,23 +149,6 @@ chronoapp.Ui = (function() {
 		appUiContainer.appendChild(self._actionsMenu);
 		
 		return appUiContainer;
-	}
-	
-	function buildTitle() {
-		var title = document.createElement("h1");
-		var titleText = document.createTextNode("Chrono");
-		title.appendChild(titleText);
-		
-		return title;
-	}
-	
-	function buildDescription() {
-		var descriptionContainer = document.createElement("div");
-		descriptionContainer.style.marginBottom = "1em";
-		var description = document.createTextNode("Le chrono peut aussi s'utiliser avec le clavier. Les touches sont indiquées dans les boutons.");
-		descriptionContainer.appendChild(description);
-		
-		return descriptionContainer;
 	}
 	
 	function buildChronoDisplay(self) {
@@ -162,9 +163,8 @@ chronoapp.Ui = (function() {
 		return chronoDiv;
 	}
 	
-	function _buildChronoField(id) {
+	function _buildChronoField() {
 		var chronoField = document.createElement("span");
-		chronoField.setAttribute("id", id);
 		chronoField.innerHTML = "00";
 		
 		return chronoField;
