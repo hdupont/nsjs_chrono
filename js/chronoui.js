@@ -233,7 +233,7 @@ chronoapp.Ui = (function() {
 		return chronoField;
 	}
 	
-	function _buildMenuButton(id, color, label, sublabel) {
+	function _buildActionButton(id, color, label, sublabel) {
 		
 		function addButtonLabel(button, label, sublabel) {
 			var labelDiv = document.createElement("div");
@@ -269,9 +269,9 @@ chronoapp.Ui = (function() {
 	}
 	
 	function buildActionsMenu(self) {
-		var startButton = _buildMenuButton(_ids.START_BUTTON, "#4CAF50", "Démarrer", "\"Entrer\" ou \"d\""); // vert;
-		var pauseButton = _buildMenuButton(_ids.PAUSE_BUTTON, "#FFA500", "Pause", "\"Espace\" ou \"p\""); // orange;
-		var stopButton = _buildMenuButton(_ids.STOP_BUTTON, "#f44336", "Stop", "\"Suppr\" ou \"Retour arrière\""); // rouge;
+		var startButton = _buildActionButton(_ids.START_BUTTON, "#4CAF50", "Démarrer", "\"Entrer\" ou \"d\""); // vert;
+		var pauseButton = _buildActionButton(_ids.PAUSE_BUTTON, "#FFA500", "Pause", "\"Espace\" ou \"p\""); // orange;
+		var stopButton = _buildActionButton(_ids.STOP_BUTTON, "#f44336", "Stop", "\"Suppr\" ou \"Retour arrière\""); // rouge;
 		
 		var buttonsContainer = document.createElement("div");
 		buttonsContainer.appendChild(startButton);
