@@ -183,7 +183,7 @@ chronoapp.Ui = (function() {
 		appUiContainer.appendChild(buildTitle());
 		appUiContainer.appendChild(buildChronoDisplay(self));
 		appUiContainer.appendChild(buildDescription());
-		appUiContainer.appendChild(buildButtonsMenu(self));
+		appUiContainer.appendChild(buildActionsMenu(self));
 		
 		return appUiContainer;
 	}
@@ -268,7 +268,7 @@ chronoapp.Ui = (function() {
 		return button;
 	}
 	
-	function buildButtonsMenu(self) {
+	function buildActionsMenu(self) {
 		var startButton = _buildMenuButton(_ids.START_BUTTON, "#4CAF50", "Démarrer", "\"Entrer\" ou \"d\""); // vert;
 		var pauseButton = _buildMenuButton(_ids.PAUSE_BUTTON, "#FFA500", "Pause", "\"Espace\" ou \"p\""); // orange;
 		var stopButton = _buildMenuButton(_ids.STOP_BUTTON, "#f44336", "Stop", "\"Suppr\" ou \"Retour arrière\""); // rouge;
