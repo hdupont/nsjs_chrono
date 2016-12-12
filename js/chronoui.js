@@ -38,19 +38,27 @@ chronoapp.Ui = (function() {
 	function Ui(appNodeId) {
 		this._appContainerId = appNodeId;
 		this._instanceId = _instanceId++;
+		
+		this._actionsMenu = buildActionsMenu(self);
+		this._appUiElement = buildDomElement(this);
+		
+		
 	}
 	
 	// NB
 	// Pour mettre l'interface dans son état initiale (état stop), on a
 	// choisi de simuler un click plutôt... que de faire autre chose...
 	Ui.prototype.init = function() {
+		// On met l'UI dans son état initial.
 		_getStopButton().click();
+
+		// On montre l'UI.
+		appUiContainer.style.display = "none";
 	};
 	
 	Ui.prototype.appendToDom = function(callback) {
 		var appNode = document.getElementById(this._appContainerId);
-		var appUi = buildDomElement(this);
-		appendUi(appNode, appUi);
+		appendUi(appNode, this._appUiElement);
 		callback();
 	}
 	
@@ -91,20 +99,23 @@ chronoapp.Ui = (function() {
 	};
 
 	Ui.prototype.setTrigger = function(name, handler) {
+		var actionButton = null;
 		// TODO supprimer la répétition du nom des actions
 		// Répétée ici et dans le controlleur.
 		if (name === "startchrono") {
-			_getStartButton().addEventListener("click", handler);
+			actionButton = _buildActionButton(_ids.START_BUTTON, "#4CAF50", "Démarrer", "\"Entrer\" ou \"d\""); // vert;
 		}
 		else if (name === "pausechrono") {
-			_getPauseButton().addEventListener("click", handler);;
+			actionButton = _buildActionButton(_ids.PAUSE_BUTTON, "#FFA500", "Pause", "\"Espace\" ou \"p\""); // orange;
 		}
 		else if (name === "stopchrono") {
-			_getStopButton().addEventListener("click", handler);
+			actionButton = _buildActionButton(_ids.STOP_BUTTON, "#f44336", "Stop", "\"Suppr\" ou \"Retour arrière\""); // rouge;
 		}
 		else {
 			throw new Error("Ui..setTrigger - unknow action: " + name);
 		}
+		actionButton.addEventListener("click", handler);
+		this._actionsMenu.appendChild(actionButton);
 	};	
 	
 	// private
@@ -185,10 +196,14 @@ chronoapp.Ui = (function() {
 		appUiContainer.appendChild(buildDescription());
 		appUiContainer.appendChild(buildActionsMenu(self));
 		
+		appUiContainer.style.display = "none";
+		
 		return appUiContainer;
 	}
 	
 	function appendUi(appNode, appUiContainer) {
+		// TODO URGENT Supprimer cette M... c'est probablement ce qui fait sauter
+		// les évènements et qui empêche de conserver nos noeuds en tant qu'attributs.
 		appNode.innerHTML = appUiContainer.innerHTML;
 	}
 	
@@ -269,18 +284,7 @@ chronoapp.Ui = (function() {
 	}
 	
 	function buildActionsMenu(self) {
-		var startButton = _buildActionButton(_ids.START_BUTTON, "#4CAF50", "Démarrer", "\"Entrer\" ou \"d\""); // vert;
-		var pauseButton = _buildActionButton(_ids.PAUSE_BUTTON, "#FFA500", "Pause", "\"Espace\" ou \"p\""); // orange;
-		var stopButton = _buildActionButton(_ids.STOP_BUTTON, "#f44336", "Stop", "\"Suppr\" ou \"Retour arrière\""); // rouge;
-		
-		var buttonsContainer = document.createElement("div");
-		buttonsContainer.appendChild(startButton);
-		buttonsContainer.appendChild(pauseButton);
-		buttonsContainer.appendChild(stopButton);
-		
 		var menuDiv = document.createElement("div");
-		menuDiv.appendChild(buttonsContainer);
-
 		return menuDiv;
 	}
 	
