@@ -6,7 +6,55 @@
 // changement suite à son inscription avec chrono.addOnChangeListener.
 // Il est prévenu des actions utilistateurs via les écouteurs attachés à
 // l'interface utilisateur.
+// Le controlleur gère le clavier et l'interface DOM.
+// NOTE On sépare conceptuellemenet le clavier de l'interface DOM, bien
+// que les signaux du clavier nous arrive par le DOM.
 chronoapp.ChronoController = (function() {
+	
+	// static
+	// ------
+	
+	// TODO mettre ça dans le keyboardtk.
+	// NB. En keydown les codes correspondent aux lettres majuscules.
+	var _keyCode = {
+		"enter": 13,
+		"D": 68,
+		"space": 32,
+		"P": 80,
+		"K": 75,
+		"del": 46,
+		"backspace": 8
+	};
+	
+	var _actions = [
+		// Démarre le chrono
+		{
+			name: "startchrono",
+			handler: function(self) {
+				self._chrono.start();
+				self._ui.switchToStartState();		
+			},
+			keyTriggers: [_keyCode.enter, _keyCode.D]
+		},
+		// Met le chrono en pause.
+		{
+			name:"pausechrono",
+			handler: function(self) {
+				self._chrono.pause();
+				self._ui.switchToPauseState();
+			},
+			keyTriggers: [_keyCode.space, _keyCode.P]
+		},
+		// Arrête le chrono.
+		{
+			name: "stopchrono",
+			handler: function stopChrono(self) {
+				self._chrono.stop();
+				self._ui.switchToStopState();
+			},
+			keyTriggers: [_keyCode.K, _keyCode.del, _keyCode.backspace]
+		}
+	];
 	
 	// public
 	// ------
@@ -32,9 +80,12 @@ chronoapp.ChronoController = (function() {
 		// évoquées dans la doc de chronoui.
 		var self = this;
 		ui.appendToDom(function() {
-			_addStartTriggers(self); // évènement: démarrer le chrono
-			_addPauseTriggers(self); // évènement: mettre en pause le chrono
-			_addStopTriggers(self);  // évènement: arrêter le chrono
+			_actions.forEach(function(actn) {
+				var handler = function() {
+					actn.handler(self);
+				};
+				_addTrigger(self, actn.name, handler, actn.keyTriggers)
+			});
 			ui.init();
 		})
 	}
@@ -51,74 +102,13 @@ chronoapp.ChronoController = (function() {
 	
 	// private
 	// -------
-	
-	// NB. En keydown les codes correspondent aux lettres majuscules.
-	var _keyCode = {
-		"enter": 13,
-		"D": 68,
-		"space": 32,
-		"P": 80,
-		"K": 75,
-		"del": 46,
-		"backspace": 8
-	};
 
-	function _addTrigger(self, chronoEvt, uiTrigger, keysTrigger) {
-		uiTrigger("click", chronoEvt);
-		_addKeysListenerToBody(keysTrigger, chronoEvt);
+	// Ajoute les déclencheurs des actions sur le chrono.
+	function _addTrigger(self, actionName, actionHandler, actionsKeys) {
+		self._ui.setTrigger(actionName, actionHandler);
+		_addKeysListenerToBody(actionsKeys, actionHandler);
 	}
-	
-	// Ajoute les déclencheurs de l'évènement: (re-)démarrer le chrono.
-	function _addStartTriggers(self) {
-		
-		// Démarre le chrono
-		function startChrono() {
-			self._chrono.start();
-			self._ui.switchToStartState();		
-		}
-		
-		// Trigger DOM
-		self._ui.setStartChronoTrigger(startChrono);
-		
-		// Triggers clavier
-		var _startKeys = [_keyCode.enter, _keyCode.D];
-		_addKeysListenerToBody(_startKeys, startChrono);
-	}
-	
-	// Ajoute les déclencheurs de l'évènement: mise en pause du chrono.
-	function _addPauseTriggers(self) {
-		
-		// Met le chrono en pause.
-		function pauseChrono() {
-			self._chrono.pause();
-			self._ui.switchToPauseState();
-		}
-		
-		// Trigger DOM
-		self._ui.setPauseChronoTrigger(pauseChrono);
-		
-		// Triggers clavier
-		var _pauseKeys = [_keyCode.space, _keyCode.P];
-		_addKeysListenerToBody(_pauseKeys, pauseChrono);
-	}
-	
-	// Ajoute les déclencheurs de l'évènement: arrêt du chrono.
-	function _addStopTriggers(self) {
-		
-		// Arrête le chrono.
-		function stopChrono() {
-			self._chrono.stop();
-			self._ui.switchToStopState();
-		}
-		
-		// Trigger DOM
-		self._ui.setStopChronoTrigger(stopChrono);
-		
-		// Triggers clavier
-		var _stopKeys = [_keyCode.K, _keyCode.del, _keyCode.backspace];
-		_addKeysListenerToBody(_stopKeys, stopChrono);
-	}
-	
+
 	function _addKeysListenerToBody(keys, listerner) {
 		document.body.addEventListener("keydown", function(event) {
 			if (keys.indexOf(event.keyCode) !== -1) {

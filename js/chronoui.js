@@ -16,12 +16,30 @@
 // effectuée.
 chronoapp.Ui = (function() {
 	
+	// static
+	// ------
+	
+	// TODO finir de gérer les ids pour pouvoir avoir plusieurs
+	// instance de chrono tournant en même dans une même page.
+	var _instanceId = 0;
+	var _IdPrefix = "chrn_";
+	var _ids = {
+		START_BUTTON: "startbutton",
+		PAUSE_BUTTON: "pausebutton",
+		STOP_BUTTON: "stopbutton",
+		MINUTES_FIELD: "minutesfields",
+		SECONDES_FIELD: "secondesfields",
+		MILLISECONDES_FIELD: "millisecondesfields"
+	};
+	
 	// public
 	// ------
 
 	function Ui(appNodeId) {
 		this._appContainerId = appNodeId;
+		this._instanceId = _instanceId++;
 	}
+	
 	// NB
 	// Pour mettre l'interface dans son état initiale (état stop), on a
 	// choisi de simuler un click plutôt... que de faire autre chose...
@@ -71,6 +89,23 @@ chronoapp.Ui = (function() {
 		_setSecondsField(_twoDigits(seconds));
 		_setMillisecondesField(_twoDigits(milliseconds));
 	};
+
+	Ui.prototype.setTrigger = function(name, handler) {
+		// TODO supprimer la répétition du nom des actions
+		// Répétée ici et dans le controlleur.
+		if (name === "startchrono") {
+			this.setStartChronoTrigger(handler);
+		}
+		else if (name === "pausechrono") {
+			this.setPauseChronoTrigger(handler);
+		}
+		else if (name === "stopchrono") {
+			this.setStopChronoTrigger(handler);
+		}
+		else {
+			throw new Error("Ui..setTrigger - unknow action: " + name);
+		}
+	};
 	
 	Ui.prototype.setStartChronoTrigger = function(handler) {
 		_getStartButton().addEventListener("click", handler);
@@ -82,19 +117,10 @@ chronoapp.Ui = (function() {
 	
 	Ui.prototype.setStopChronoTrigger = function(handler) {
 		_getStopButton().addEventListener("click", handler);
-	};
+	};	
 	
 	// private
 	// -------
-
-	var _ids = {
-		START_BUTTON: "chrnuistartbutton",
-		PAUSE_BUTTON: "chrnuipausebutton",
-		STOP_BUTTON: "chrnuistopbutton",
-		MINUTES_FIELD: "chrnuiminutesfields",
-		SECONDES_FIELD: "chrnuisecondesfields",
-		MILLISECONDES_FIELD: "chrnuimillisecondesfields"
-	};
 	
 	function _getStartButton() {
 		return document.getElementById(_ids.START_BUTTON);
