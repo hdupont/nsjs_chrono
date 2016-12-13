@@ -25,4 +25,4 @@
 	// Et on met un autre chrono à disposition de l'utilisateur.
 	_addChrono();
 	
-})(h_chrono.Chrono, chronoapp.ChronoController, chronoapp.Ui);
+})(chronoapp.Chrono, chronoapp.ChronoController, chronoapp.Ui);

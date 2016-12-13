@@ -1,16 +1,10 @@
 /**
- * h_time est le namespace du composant Chrono.
- * NOTE Son nom est préfixé d'un "h_" pour éviter le collison de nom avec l'environnement global.
- */
-var h_chrono = {};
-
-/**
  * -------------
  * @class Chrono 
  * -------------
  * Un Chrono est un chronomètre qui indique les minutes, secondes et millisecondes. 
  */
-h_chrono.Chrono = (function() {
+chronoapp.Chrono = (function() {
 	
 	// public
 	// ------
