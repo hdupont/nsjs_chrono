@@ -8,7 +8,7 @@ var h_chrono = {};
  * -------------
  * @class Chrono 
  * -------------
- * Un Chrono est chronomètre pouvant indiquer minutes, secondes et millisecondes. 
+ * Un Chrono est un chronomètre qui indique les minutes, secondes et millisecondes. 
  */
 h_chrono.Chrono = (function() {
 	
