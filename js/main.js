@@ -26,7 +26,7 @@
 	// On met un chrono à disposition de l'utilisateur.
 	_addChrono();
 	
-	// Et on met un autre chrono à disposition de l'utilisateur.
+	// Et, pour le fun, on met un autre chrono à disposition de l'utilisateur.
 	_addChrono();
 	
 })(chronoapp.Chrono, chronoapp.Controller, chronoapp.Ui, chronoapp.Actions);
