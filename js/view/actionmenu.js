@@ -20,9 +20,25 @@ chronoapp.ActionMenu = (function() {
 	 * @property {HTMLElement} _stopButton Le bouton qui arrête le chrono.
 	 */
 	function ActionMenu() {
+		this._actionMenu =  _buildActionsMenu();
 		this._startButton = _buildActionButton("#4CAF50", "Démarrer", "\"Entrer\" ou \"d\""); // vert;
 		this._pauseButton = _buildActionButton("#FFA500", "Pause", "\"Espace\" ou \"p\""); // orange;
 		this._stopButton = _buildActionButton("#f44336", "Stop", "\"Suppr\" ou \"Retour arrière\""); // rouge;
+	}
+	
+	ActionMenu.prototype.initStartAction = function(actionHandler) {
+		this._startButton.addEventListener("click", actionHandler);
+		this._actionMenu.appendChild(this._startButton);
+	}
+	
+	ActionMenu.prototype.initPauseAction = function(actionHandler) {
+		this._pauseButton.addEventListener("click", actionHandler);
+		this._actionMenu.appendChild(this._pauseButton);
+	}
+	
+	ActionMenu.prototype.initStopAction = function(actionHandler) {
+		this._stopButton.addEventListener("click", actionHandler);
+		this._actionMenu.appendChild(this._stopButton);
 	}
 	
 	/**
@@ -36,7 +52,7 @@ chronoapp.ActionMenu = (function() {
 	};
 	
 	ActionMenu.prototype.buildDomNode = function() {
-		return _buildActionsMenu(this);
+		return this._actionMenu;
 	};
 	
 	/**
@@ -64,33 +80,6 @@ chronoapp.ActionMenu = (function() {
 		_showStartButton(this);
 		_hidePauseButton(this);
 		_showStopButton(this);
-	};
-
-	/**
-	 * Ajoute à l'éléments de l'UI pouvant déclencher sur le chrono l'action
-	 * dont le nom est passé en paramètre le handler correspondant.
-	 * passé en paramètre.
-	 * @param {string} actionName Le nom d'une action.
-	 * @param {function} actionHandler Le handler correspondant à cette action.
-	 */
-	ActionMenu.prototype.initActionTrigger = function(actionName, actionHandler) {
-		var actionButton = null;
-		// TODO supprimer la répétition du nom des actions
-		// Répétée ici et dans le controlleur.
-		if (actionName === "startchrono") {
-			actionButton = this._startButton;
-		}
-		else if (actionName === "pausechrono") {
-			actionButton = this._pauseButton;
-		}
-		else if (actionName === "stopchrono") {
-			actionButton = this._stopButton;
-		}
-		else {
-			throw new Error("Ui..setTrigger - unknow action: " + name);
-		}
-		actionButton.addEventListener("click", actionHandler);
-		this._actionsMenu.appendChild(actionButton);
 	};	
 	
 	// private
@@ -189,7 +178,7 @@ chronoapp.ActionMenu = (function() {
 	 *  pouvant déclencher une action sur le chrono.
 	 * @param {object} self L'interface utilisateur. 
 	 */
-	function _buildActionsMenu(self) {
+	function _buildActionsMenu() {
 		var menuDiv = document.createElement("div");
 		menuDiv.setAttribute("kind", "actionmenu");
 		return menuDiv;

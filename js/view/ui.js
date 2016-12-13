@@ -23,13 +23,7 @@ chronoapp.Ui = (function(ActionMenu, TimeView) {
 	 * affichent le temps indiqué par le chrono.
 	 */
 	function Ui() {
-		this._actionMenuu = new ActionMenu();
-		
-		this._actionsMenu = _buildActionsMenu(self);
-		this._startButton = _buildActionButton("#4CAF50", "Démarrer", "\"Entrer\" ou \"d\""); // vert;
-		this._pauseButton = _buildActionButton("#FFA500", "Pause", "\"Espace\" ou \"p\""); // orange;
-		this._stopButton = _buildActionButton("#f44336", "Stop", "\"Suppr\" ou \"Retour arrière\""); // rouge;
-		
+		this._actionMenu = new ActionMenu();
 		this._timeViews = [new TimeView("2em"), new TimeView("4em")];
 	}
 	
@@ -40,7 +34,7 @@ chronoapp.Ui = (function(ActionMenu, TimeView) {
 	 */
 	Ui.prototype.init = function() {
 		// On met l'UI dans son état initial.
-		this._stopButton.click();
+		this._actionMenu.switchToStopState();
 	};
 	
 	/**
@@ -62,27 +56,21 @@ chronoapp.Ui = (function(ActionMenu, TimeView) {
 		this._timeViews.forEach(function(timeView) {
 			timeView.switchToStopState();
 		});
-		_showStartButton(this);
-		_hidePauseButton(this);
-		_hideStopButton(this);
+		this._actionMenu.switchToStopState();
 	};
 	
 	/**
 	 * Passe l'interface dans l'état START: chrono démarré.
 	 */
 	Ui.prototype.switchToStartState = function() {
-		_hideStartButton(this);
-		_showPauseButton(this);
-		_showStopButton(this);
+		this._actionMenu.switchToStartState();
 	}
 	
 	/**
 	 * Passe l'interface dans l'état PAUSE: chrono en pause.
 	 */
 	Ui.prototype.switchToPauseState = function() {
-		_showStartButton(this);
-		_hidePauseButton(this);
-		_showStopButton(this);
+		this._actionMenu.switchToPauseState();
 	};
 	
 	/**
@@ -111,73 +99,21 @@ chronoapp.Ui = (function(ActionMenu, TimeView) {
 		// TODO supprimer la répétition du nom des actions
 		// Répétée ici et dans le controlleur.
 		if (actionName === "startchrono") {
-			actionButton = this._startButton;
+			this._actionMenu.initStartAction(actionHandler);
 		}
 		else if (actionName === "pausechrono") {
-			actionButton = this._pauseButton;
+			this._actionMenu.initPauseAction(actionHandler);
 		}
 		else if (actionName === "stopchrono") {
-			actionButton = this._stopButton;
+			this._actionMenu.initStopAction(actionHandler);
 		}
 		else {
 			throw new Error("Ui..setTrigger - unknow action: " + name);
 		}
-		actionButton.addEventListener("click", actionHandler);
-		this._actionsMenu.appendChild(actionButton);
 	};	
 	
 	// private
 	// -------
-		
-	/**
-	 * Cache le bouton START.
-	 */
-	function _hideStartButton(self) {
-		self._startButton.style.display = "none";
-	}
-	
-	/**
-	 * Cache le bouton PAUSE.
-	 */
-	function _hidePauseButton(self) {
-		self._pauseButton.style.display = "none";
-	}
-	
-	/**
-	 * Cache le bouton STOP.
-	 */
-	function _hideStopButton(self) {
-		self._stopButton.style.display = "none";
-	}
-	
-	/**
-	 * Affiche le bouton START.
-	 */
-	function _showStartButton(self) {
-		self._startButton.style.display = "";
-	}
-	
-	/**
-	 * Affiche le bouton PAUSE.
-	 */
-	function _showPauseButton(self) {
-		self._pauseButton.style.display = "";
-	}
-	
-	/**
-	 * Affiche le bouton STOP.
-	 */
-	function _showStopButton(self) {
-		self._stopButton.style.display = "";
-	}
-	
-	/**
-	 * Affiche les boutons PAUSE ET STOP.
-	 */
-	function showPauseAndStopButtons(self) {
-		_showPauseButton(self);
-		_showStopButton(self);
-	}
 	
 	/**
 	 * @return {element} Un element div contenant l'UI.
@@ -188,58 +124,9 @@ chronoapp.Ui = (function(ActionMenu, TimeView) {
 			appUiContainer.appendChild(timeView.buildDomNode());
 		})
 		
-		appUiContainer.appendChild(self._actionsMenu);
+		appUiContainer.appendChild(self._actionMenu.buildDomNode());
 		
 		return appUiContainer;
-	}
-	
-	/**
-	 * Construit un bouton pouvant déclencher une action sur le chrono.
-	 * @param {object} self L'interface utilisateur. 
-	 */
-	function _buildActionButton(color, label, sublabel) {
-		
-		function addButtonLabel(button, label, sublabel) {
-			var labelDiv = document.createElement("div");
-			labelDiv.style.fontSize = "2em";
-			labelDiv.innerHTML = label;
-			
-			var sublabelDiv = document.createElement("div");
-			sublabelDiv.style.fontSize = "1em";
-			sublabelDiv.innerHTML = sublabel;
-			
-			button.appendChild(labelDiv);
-			button.appendChild(sublabelDiv);
-		}
-		
-		var button = document.createElement("button");
-		
-		// Style des boutons
-		button.style.backgroundColor = color; /* Green */
-		button.style.border = "none";
-		button.style.color = "white";
-		button.style.padding = "15px 32px";
-		button.style.textAlign = "center";
-		button.style.textDecoration = "none";
-		button.style.display = "inline-block";
-		button.style.fontSize = "16px";
-		button.style.marginRight = "5px";
-		button.style.borderRadius = "8px";
-		
-		addButtonLabel(button, label, sublabel);
-		
-		return button;
-	}
-	
-	/**
-	 * Construit la partie de l'interface destinée à accueillir les un bouton
-	 *  pouvant déclencher une action sur le chrono.
-	 * @param {object} self L'interface utilisateur. 
-	 */
-	function _buildActionsMenu(self) {
-		var menuDiv = document.createElement("div");
-		menuDiv.setAttribute("kind", "actionmenu");
-		return menuDiv;
 	}
 	
 	return Ui;
