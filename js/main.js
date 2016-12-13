@@ -9,17 +9,18 @@
 	 * l'affichage et à l'utilisation d'un chrono par l'utiisateur
 	 */
 	function _addChrono() {
-		// Création du chrono.
+		// Création du chrono avec lequel l'utilisateur va interagir.
 		var chrono = new Chrono();
 		
-		// Création de l'interface utilisateur.
+		// Création de l'interface par l'intermédiaire de laquelle 
+		// l'utilisateur interagira avec le chrono.
 		var ui = new Ui();
 		
 		// Création de la liste des actions pouvant être effectuées sur le
-		// chrono.
+		// chrono par l'utilisateur.
 		var actions = new Actions(chrono, ui);
 		
-		// Création du controlleur.
+		// Création du controlleur qui initialise l'interface utilisateur.
 		var controller = new Controller(chrono, ui, actions);
 	}
 	
