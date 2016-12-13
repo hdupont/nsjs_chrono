@@ -6,8 +6,8 @@
  */
 chronoapp.Actions = (function(Action) {
 	
-	// static
-	// ------
+	// static private
+	// --------------
 
 	/**
 	 * Les touches qui permettent d'effectuer une action sur le chrono.
