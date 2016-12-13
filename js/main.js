@@ -5,7 +5,7 @@
 (function(Chrono, Controller, Ui, Actions) {
 	
 	/**
-	 * Assemble les éléments nécessaires (chrono, controlleur et UI) à
+	 * Assemble les éléments nécessaires (chrono, actions, controlleur et UI) à
 	 * l'affichage et à l'utilisation d'un chrono par l'utiisateur
 	 */
 	function _addChrono() {
