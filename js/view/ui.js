@@ -6,7 +6,7 @@
  * 1. d'agir sur le chrono via un menu d'action
  * 2. de voir le temps affiché par le chrono via un ensemble de vues.
  */
-chronoapp.Ui = (function(ActionMenu, TimeView) {
+chronoapp.Ui = (function(ActionsMenu, TimeView) {
 	
 	// public
 	// ------
@@ -16,13 +16,13 @@ chronoapp.Ui = (function(ActionMenu, TimeView) {
 	 * @property {HTMLElement} _actionsMenu La partie de l'interface contenant les
 	 * boutons pouvant déclencher une actions sur le chrono.
 	 * 
-	 * @property {object} _actionMenu Le menu contenant les actions pouvant
+	 * @property {object} _actionsMenu Le menu contenant les actions pouvant
 	 * être effectuée par l'utilisateur.
 	 * @property {array} _timeViews Les parties de l'interface qui
 	 * affichent le temps indiqué par le chrono.
 	 */
 	function Ui() {
-		this._actionMenu = new ActionMenu();
+		this._actionsMenu = new ActionsMenu();
 		
 		// NOTE Pour l'instant on affiche une petite vue (2em) et une grande
 		// vue (4em).
@@ -36,7 +36,7 @@ chronoapp.Ui = (function(ActionMenu, TimeView) {
 	 */
 	Ui.prototype.init = function() {
 		// On met l'UI dans son état initial.
-		this._actionMenu.switchToStopState();
+		this._actionsMenu.switchToStopState();
 	};
 	
 	/**
@@ -58,21 +58,21 @@ chronoapp.Ui = (function(ActionMenu, TimeView) {
 		this._timeViews.forEach(function(timeView) {
 			timeView.switchToStopState();
 		});
-		this._actionMenu.switchToStopState();
+		this._actionsMenu.switchToStopState();
 	};
 	
 	/**
 	 * Passe l'interface dans l'état START: chrono démarré.
 	 */
 	Ui.prototype.switchToStartState = function() {
-		this._actionMenu.switchToStartState();
+		this._actionsMenu.switchToStartState();
 	}
 	
 	/**
 	 * Passe l'interface dans l'état PAUSE: chrono en pause.
 	 */
 	Ui.prototype.switchToPauseState = function() {
-		this._actionMenu.switchToPauseState();
+		this._actionsMenu.switchToPauseState();
 	};
 	
 	/**
@@ -101,13 +101,13 @@ chronoapp.Ui = (function(ActionMenu, TimeView) {
 		// TODO supprimer la répétition du nom des actions
 		// Répétée ici et dans le controlleur.
 		if (actionName === "startchrono") {
-			this._actionMenu.initStartAction(actionHandler);
+			this._actionsMenu.initStartAction(actionHandler);
 		}
 		else if (actionName === "pausechrono") {
-			this._actionMenu.initPauseAction(actionHandler);
+			this._actionsMenu.initPauseAction(actionHandler);
 		}
 		else if (actionName === "stopchrono") {
-			this._actionMenu.initStopAction(actionHandler);
+			this._actionsMenu.initStopAction(actionHandler);
 		}
 		else {
 			throw new Error("Ui..setTrigger - unknow action: " + name);
@@ -126,10 +126,10 @@ chronoapp.Ui = (function(ActionMenu, TimeView) {
 			appUiContainer.appendChild(timeView.buildDomNode());
 		})
 		
-		appUiContainer.appendChild(self._actionMenu.buildDomNode());
+		appUiContainer.appendChild(self._actionsMenu.buildDomNode());
 		
 		return appUiContainer;
 	}
 	
 	return Ui;
-})(chronoapp.ActionMenu, chronoapp.TimeView);
+})(chronoapp.ActionsMenu, chronoapp.TimeView);

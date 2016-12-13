@@ -1,11 +1,11 @@
 /**
  * --------
- * @class ActionMenu
+ * @class ActionsMenu
  * --------
- * Un ActionMenu est une partie de l'interface contenant les boutons qui
+ * Un ActionsMenu est une partie de l'interface contenant les boutons qui
  * permettent d'effectuer des actions sur le chrono.
  */
-chronoapp.ActionMenu = (function() {
+chronoapp.ActionsMenu = (function() {
 	
 	// public
 	// ------
@@ -19,24 +19,24 @@ chronoapp.ActionMenu = (function() {
 	 * @property {HTMLElement} _startButton Le bouton qui met en pause le chrono.
 	 * @property {HTMLElement} _stopButton Le bouton qui arrête le chrono.
 	 */
-	function ActionMenu() {
+	function ActionsMenu() {
 		this._actionMenu =  _buildActionsMenu();
 		this._startButton = _buildActionButton("#4CAF50", "Démarrer", "\"Entrer\" ou \"d\""); // vert;
 		this._pauseButton = _buildActionButton("#FFA500", "Pause", "\"Espace\" ou \"p\""); // orange;
 		this._stopButton = _buildActionButton("#f44336", "Stop", "\"Suppr\" ou \"Retour arrière\""); // rouge;
 	}
 	
-	ActionMenu.prototype.initStartAction = function(actionHandler) {
+	ActionsMenu.prototype.initStartAction = function(actionHandler) {
 		this._startButton.addEventListener("click", actionHandler);
 		this._actionMenu.appendChild(this._startButton);
 	}
 	
-	ActionMenu.prototype.initPauseAction = function(actionHandler) {
+	ActionsMenu.prototype.initPauseAction = function(actionHandler) {
 		this._pauseButton.addEventListener("click", actionHandler);
 		this._actionMenu.appendChild(this._pauseButton);
 	}
 	
-	ActionMenu.prototype.initStopAction = function(actionHandler) {
+	ActionsMenu.prototype.initStopAction = function(actionHandler) {
 		this._stopButton.addEventListener("click", actionHandler);
 		this._actionMenu.appendChild(this._stopButton);
 	}
@@ -46,19 +46,19 @@ chronoapp.ActionMenu = (function() {
 	 * NOTE Pour mettre l'interface dans son état initiale (état stop), on a
 	 * choisi de simuler un click.
 	 */
-	ActionMenu.prototype.init = function() {
+	ActionsMenu.prototype.init = function() {
 		// On met l'UI dans son état initial.
 		this._stopButton.click();
 	};
 	
-	ActionMenu.prototype.buildDomNode = function() {
+	ActionsMenu.prototype.buildDomNode = function() {
 		return this._actionMenu;
 	};
 	
 	/**
 	 * Passe l'interface dans l'état STOP: chrono arrêté.
 	 */
-	ActionMenu.prototype.switchToStopState = function() {
+	ActionsMenu.prototype.switchToStopState = function() {
 		_showStartButton(this);
 		_hidePauseButton(this);
 		_hideStopButton(this);
@@ -67,7 +67,7 @@ chronoapp.ActionMenu = (function() {
 	/**
 	 * Passe l'interface dans l'état START: chrono démarré.
 	 */
-	ActionMenu.prototype.switchToStartState = function() {
+	ActionsMenu.prototype.switchToStartState = function() {
 		_hideStartButton(this);
 		_showPauseButton(this);
 		_showStopButton(this);
@@ -76,7 +76,7 @@ chronoapp.ActionMenu = (function() {
 	/**
 	 * Passe l'interface dans l'état PAUSE: chrono en pause.
 	 */
-	ActionMenu.prototype.switchToPauseState = function() {
+	ActionsMenu.prototype.switchToPauseState = function() {
 		_showStartButton(this);
 		_hidePauseButton(this);
 		_showStopButton(this);
@@ -184,5 +184,5 @@ chronoapp.ActionMenu = (function() {
 		return menuDiv;
 	}
 	
-	return ActionMenu;
+	return ActionsMenu;
 })();
