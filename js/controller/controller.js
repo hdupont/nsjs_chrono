@@ -2,12 +2,13 @@
  * ----------------------
  * @class Controller
  * ----------------------
- * Controller fait le lien entre le chrono et l'interface utilisateur.
- * Il est prévenu des changements d'états car il a souscrit un abonnement au
- * modification du chrono (cf. chrono.addOnChangeListener).
- * Il est prévenu des actions utilistateurs au travers des déclencheurs
- * d'actions qu'il attache à l'interface utilisateur.
- * Le controlleur gère le clavier et l'interface DOM.
+ * Controller fait le lien entre le chrono, l'UI (graphique et clavier).
+ * Il est abonne l'UI au changement d'état du chrono pour que cette dernière
+ * puisse se mettre à jour (cf. chrono.addOnChangeListener).
+ * Il associe à l'UI les traitements à effectuer lors du déclenchement d'une
+ * action par l'intermédiaire de cette dernière.
+ * Il associe au clavier les traitements à effectuer lors du déclenchement d'une
+ * action par l'intermédiaire de ce dernier. 
  * NOTE On sépare conceptuellemenet le clavier de l'interface DOM, bien
  * que les signaux du clavier nous arrive par le DOM.
  */
@@ -19,9 +20,8 @@ chronoapp.Controller = (function() {
 	/**
 	 * Controller
 	 * 1. Construit un Controller
-	 * 2. Abonne le controlleur au changement d'état du chrono passé en
-	 * paramètre.
-	 * 3. Initialise l'interface.
+	 * 2. Abonne l'UI au changement d'état du chrono passé en paramètre.
+	 * 3. Initialise l'interface (graphique et clavier).
 	 * 4. Ajoute l'interface au DOM.
 	 * 
 	 * @param {object} chrono Le chrono mis à disposition de l'utilisateur.
@@ -33,26 +33,19 @@ chronoapp.Controller = (function() {
 	 * @property {object} _actions
 	 */
 	function Controller(chrono, ui, actions) {		
-		this._chrono = chrono;
-		this._ui = ui;
-		
-		// On abonne le controlleur à l'écoute des changement d'état du chrono.
-		// NOTE On place l'appelle dans une fonction anonyme pour conserver le
-		// bon contexte à l'exécution.
-		var self = this;
 		
 		// On abonne l'UI aux changements d'état du chrono.
 		chrono.addOnChangeListener(function(minutes, secondes, millisecondes) {
 			ui.update(minutes, secondes, millisecondes);
 		});
 		
-		// On initialise les éléments de l'UI pouvant déclencher une action sur
-		// le chrono.
+		// On associe chaque éléments de l'interface (graphique et clavier) à
+		// son action.
 		actions.each(function(action) {
-			_initUiActionTrigger(self, action);
+			_initUiActionTrigger(ui, action);
 		});
 
-		// On initialise l'interface utilisateur.
+		// On met l'interface graphique dans son état initial.
 		ui.init();
 		
 		// On ajoute l'interface utilisateur au DOM.
@@ -69,7 +62,7 @@ chronoapp.Controller = (function() {
 	 * @param {object} self Ce controlleur.
 	 * @param {object} action Une action pouvant être effectuée sur le chrono.
 	 */
-	function _initUiActionTrigger(self, action) {
+	function _initUiActionTrigger(ui, action) {
 		
 		// Initialise les touches pouvant déclencher sur le chrono l'action
 		// passée passée en paramètre à la fonction appelante.
@@ -82,9 +75,9 @@ chronoapp.Controller = (function() {
 		}
 		
 		var actionHandler = function() {
-			action.execute(self._ui);
+			action.execute();
 		};
-		self._ui.initActionTrigger(action);
+		ui.initActionTrigger(action);
 		addKeysListenerToBody(action.getKeys(), actionHandler);
 	}
 	
