@@ -6,7 +6,7 @@
  * 1. d'agir sur le chrono
  * 2. de voir le temps affiché par le chrono 
  */
-chronoapp.Ui = (function() {
+chronoapp.Ui = (function(TimeView) {
 	
 	// public
 	// ------
@@ -27,15 +27,14 @@ chronoapp.Ui = (function() {
 	 * les millisecondes indiquées par le chrono.
 	 */
 	function Ui() {
-		
 		this._actionsMenu = _buildActionsMenu(self);
 		this._startButton = _buildActionButton("#4CAF50", "Démarrer", "\"Entrer\" ou \"d\""); // vert;
 		this._pauseButton = _buildActionButton("#FFA500", "Pause", "\"Espace\" ou \"p\""); // orange;
 		this._stopButton = _buildActionButton("#f44336", "Stop", "\"Suppr\" ou \"Retour arrière\""); // rouge;
 		
-		this._minutesField = _buildChronoField();
-		this._secondsField = _buildChronoField();
-		this._milliseconds = _buildChronoField();
+		this._bigTimeView = new TimeView("4em");
+		this._smallTimeView = new TimeView("2em");
+		this._timeViews = [this._smallTimeView, this._bigTimeView];
 	}
 	
 	/**
@@ -64,9 +63,9 @@ chronoapp.Ui = (function() {
 	 * Passe l'interface dans l'état STOP: chrono arrêté.
 	 */
 	Ui.prototype.switchToStopState = function() {
-		this._minutesField.innerHTML = "00";
-		this._secondsField.innerHTML = "00";
-		this._milliseconds.innerHTML = "00";
+		this._timeViews.forEach(function(timeView) {
+			timeView.switchToStopState();
+		})
 		_showStartButton(this);
 		_hidePauseButton(this);
 		_hideStopButton(this);
@@ -99,20 +98,9 @@ chronoapp.Ui = (function() {
 	 * chrono.
 	 */
 	Ui.prototype.update = function(minutes, seconds, milliseconds) {
-		
-		/**
-		 * Retourne le nombre passé en paramètre sous la forme d'une chaine
-		 * d'au moins deux caractères.
-		 * @num {int} num Le nombre dont on souhaite obtenir une représentation
-		 * sous la forme d'une chaine d'au moins deux caractères.
-		 */
-		function _twoDigits(num) {
-			return (num < 10) ? ("0" + num) : ("" + num) 
-		}
-		
-		this._minutesField.innerHTML = _twoDigits(minutes);
-		this._secondsField.innerHTML = _twoDigits(seconds);
-		this._milliseconds.innerHTML = _twoDigits(milliseconds);
+		this._timeViews.forEach(function(timeView) {
+			timeView.update(minutes, seconds, milliseconds);
+		})
 	};
 
 	/**
@@ -200,40 +188,13 @@ chronoapp.Ui = (function() {
 	 */
 	function _buildDomElement(self) {
 		var appUiContainer = document.createElement("div");
-		appUiContainer.appendChild(_buildChronoDisplay(self));
+		self._timeViews.forEach(function(timeView) {
+			appUiContainer.appendChild(timeView.buildDomNode());
+		})
+		
 		appUiContainer.appendChild(self._actionsMenu);
 		
 		return appUiContainer;
-	}
-	
-	/**
-	 * Construit la partie de l'interface qui affiche l'état du chrono
-	 * sous la forme : xx:yy:zz
-	 * @param {object} self L'interface utilisateur.
-	 */
-	function _buildChronoDisplay(self) {
-		var chronoDiv = document.createElement("div");
-		chronoDiv.style.fontSize = "4em";
-		chronoDiv.appendChild(self._minutesField);
-		chronoDiv.appendChild(document.createTextNode(":"));
-		chronoDiv.appendChild(self._secondsField);
-		chronoDiv.appendChild(document.createTextNode(":"));
-		chronoDiv.appendChild(self._milliseconds);
-		
-		return chronoDiv;
-	}
-	
-	/**
-	 * Construit un élément d'interface qui affiche une durée (minutes,
-	 * secondes ou millisecondes)
-	 * NOTE Les éléments construits par _buildChronoField() seront composés par 
-	 * _buildChronoDisplay() pour afficher l'état du chrono.
-	 */
-	function _buildChronoField() {
-		var chronoField = document.createElement("span");
-		chronoField.innerHTML = "00";
-		
-		return chronoField;
 	}
 	
 	/**
@@ -286,4 +247,4 @@ chronoapp.Ui = (function() {
 	}
 	
 	return Ui;
-})();
+})(chronoapp.TimeView);
