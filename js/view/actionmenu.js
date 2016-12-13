@@ -1,12 +1,11 @@
 /**
  * --------
- * @class Ui
+ * @class ActionMenu
  * --------
- * Une Ui est une interface web qui permet à l'utilisateur
- * 1. d'agir sur le chrono
- * 2. de voir le temps affiché par le chrono 
+ * Un ActionMenu est une partie de l'interface contenant les boutons qui
+ * permettent d'effectuer des actions sur le chrono.
  */
-chronoapp.Ui = (function(ActionMenu, TimeView) {
+chronoapp.ActionMenu = (function() {
 	
 	// public
 	// ------
@@ -19,18 +18,11 @@ chronoapp.Ui = (function(ActionMenu, TimeView) {
 	 * @property {HTMLElement} _startButton Le bouton qui (re-)démarre le chrono.
 	 * @property {HTMLElement} _startButton Le bouton qui met en pause le chrono.
 	 * @property {HTMLElement} _stopButton Le bouton qui arrête le chrono.
-	 * @property {array} _timeViews Les parties de l'interface qui
-	 * affichent le temps indiqué par le chrono.
 	 */
-	function Ui() {
-		this._actionMenuu = new ActionMenu();
-		
-		this._actionsMenu = _buildActionsMenu(self);
+	function ActionMenu() {
 		this._startButton = _buildActionButton("#4CAF50", "Démarrer", "\"Entrer\" ou \"d\""); // vert;
 		this._pauseButton = _buildActionButton("#FFA500", "Pause", "\"Espace\" ou \"p\""); // orange;
 		this._stopButton = _buildActionButton("#f44336", "Stop", "\"Suppr\" ou \"Retour arrière\""); // rouge;
-		
-		this._timeViews = [new TimeView("2em"), new TimeView("4em")];
 	}
 	
 	/**
@@ -38,30 +30,19 @@ chronoapp.Ui = (function(ActionMenu, TimeView) {
 	 * NOTE Pour mettre l'interface dans son état initiale (état stop), on a
 	 * choisi de simuler un click.
 	 */
-	Ui.prototype.init = function() {
+	ActionMenu.prototype.init = function() {
 		// On met l'UI dans son état initial.
 		this._stopButton.click();
 	};
 	
-	/**
-	 * Ajoute l'interface au noeud du DOM dont l'id est passée en
-	 * paramètre.
-	 * @param {string} appNodeId L'id du noeud auquel on doit ajouter
-	 * l'interface.
-	 */
-	Ui.prototype.appendToDom = function(appNodeId) {
-		var appNode = document.getElementById(appNodeId);
-		var appUi = _buildDomElement(this);
-		appNode.appendChild(appUi);
-	}
+	ActionMenu.prototype.buildDomNode = function() {
+		return _buildActionsMenu(this);
+	};
 	
 	/**
 	 * Passe l'interface dans l'état STOP: chrono arrêté.
 	 */
-	Ui.prototype.switchToStopState = function() {
-		this._timeViews.forEach(function(timeView) {
-			timeView.switchToStopState();
-		});
+	ActionMenu.prototype.switchToStopState = function() {
 		_showStartButton(this);
 		_hidePauseButton(this);
 		_hideStopButton(this);
@@ -70,7 +51,7 @@ chronoapp.Ui = (function(ActionMenu, TimeView) {
 	/**
 	 * Passe l'interface dans l'état START: chrono démarré.
 	 */
-	Ui.prototype.switchToStartState = function() {
+	ActionMenu.prototype.switchToStartState = function() {
 		_hideStartButton(this);
 		_showPauseButton(this);
 		_showStopButton(this);
@@ -79,24 +60,10 @@ chronoapp.Ui = (function(ActionMenu, TimeView) {
 	/**
 	 * Passe l'interface dans l'état PAUSE: chrono en pause.
 	 */
-	Ui.prototype.switchToPauseState = function() {
+	ActionMenu.prototype.switchToPauseState = function() {
 		_showStartButton(this);
 		_hidePauseButton(this);
 		_showStopButton(this);
-	};
-	
-	/**
-	 * Met l'interface à jour avec les données passées en paramètres, données
-	 * qui correspondent à l'état du chrono.
-	 * @param {int} minutes Le nombre de minutes indiquées par le chrono.
-	 * @param {int} seconds Le nombre de secondes indiquées par le chrono.
-	 * @param {int} milliseconds Le nombre de millisecondes indiquées par le
-	 * chrono.
-	 */
-	Ui.prototype.update = function(minutes, seconds, milliseconds) {
-		this._timeViews.forEach(function(timeView) {
-			timeView.update(minutes, seconds, milliseconds);
-		})
 	};
 
 	/**
@@ -106,7 +73,7 @@ chronoapp.Ui = (function(ActionMenu, TimeView) {
 	 * @param {string} actionName Le nom d'une action.
 	 * @param {function} actionHandler Le handler correspondant à cette action.
 	 */
-	Ui.prototype.initActionTrigger = function(actionName, actionHandler) {
+	ActionMenu.prototype.initActionTrigger = function(actionName, actionHandler) {
 		var actionButton = null;
 		// TODO supprimer la répétition du nom des actions
 		// Répétée ici et dans le controlleur.
@@ -178,21 +145,7 @@ chronoapp.Ui = (function(ActionMenu, TimeView) {
 		_showPauseButton(self);
 		_showStopButton(self);
 	}
-	
-	/**
-	 * @return {element} Un element div contenant l'UI.
-	 */
-	function _buildDomElement(self) {
-		var appUiContainer = document.createElement("div");
-		self._timeViews.forEach(function(timeView) {
-			appUiContainer.appendChild(timeView.buildDomNode());
-		})
 		
-		appUiContainer.appendChild(self._actionsMenu);
-		
-		return appUiContainer;
-	}
-	
 	/**
 	 * Construit un bouton pouvant déclencher une action sur le chrono.
 	 * @param {object} self L'interface utilisateur. 
@@ -242,5 +195,5 @@ chronoapp.Ui = (function(ActionMenu, TimeView) {
 		return menuDiv;
 	}
 	
-	return Ui;
-})(chronoapp.ActionMenu, chronoapp.TimeView);
+	return ActionMenu;
+})();
