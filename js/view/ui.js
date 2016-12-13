@@ -59,7 +59,7 @@ chronoapp.Ui = (function(TimeView) {
 	Ui.prototype.switchToStopState = function() {
 		this._timeViews.forEach(function(timeView) {
 			timeView.switchToStopState();
-		})
+		});
 		_showStartButton(this);
 		_hidePauseButton(this);
 		_hideStopButton(this);
