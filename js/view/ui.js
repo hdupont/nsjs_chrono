@@ -95,6 +95,8 @@ chronoapp.Ui = (function(ActionsMenu, TimeView) {
 	 * passé en paramètre.
 	 * @param {string} actionName Le nom d'une action.
 	 * @param {function} actionHandler Le handler correspondant à cette action.
+	 * 
+	 * TODO Ce switch est agaçant, réfléchir à quelque chose d'autre.
 	 */
 	Ui.prototype.initActionTrigger = function(action) {
 		var actionName = action.getName();
