@@ -48,7 +48,7 @@ chronoapp.Controller = (function() {
 		
 		// On initialise les éléments de l'UI pouvant déclencher une action sur
 		// le chrono.
-		actions.forEach(function(action) {
+		actions.each(function(action) {
 			_initUiActionTrigger(self, action);
 		});
 

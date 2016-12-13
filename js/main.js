@@ -2,7 +2,7 @@
  * Programme permettant d'utiliser un chronomètre via un menu composé de boutons
  * ou avec le clavier.
  */
-(function(Chrono, Controller, Ui, Action) {
+(function(Chrono, Controller, Ui, Action, Actions) {
 	
 	/**
 	 * Assemble les éléments nécessaires (chrono, controlleur et UI) à
@@ -15,8 +15,8 @@
 		// Création de l'interface utilisateur.
 		var ui = new Ui();
 		
-		var actions = [
-			new Action(
+		var actions = new Actions(chrono, ui);
+		actions.addAction(new Action(
 				"startchrono",
 				function action() {
 					chrono.start();		
@@ -25,8 +25,9 @@
 					context.switchToStartState();		
 				}, 
 				[_keyCode.enter, _keyCode.D]
-			),
-			new Action(
+			)
+		);
+		actions.addAction(new Action(
 				"pausechrono",
 				function action() {
 					chrono.pause();
@@ -35,8 +36,9 @@
 					context.switchToPauseState();
 				},
 				[_keyCode.space, _keyCode.P]
-			),
-			new Action(
+			)
+		);
+		actions.addAction(new Action(
 				"stopchrono",
 				function action() {
 					chrono.stop();
@@ -44,8 +46,9 @@
 				function onAction(context) {
 					context.switchToStopState();
 				},
-				[_keyCode.K, _keyCode.del, _keyCode.backspace])
-		];	
+				[_keyCode.K, _keyCode.del, _keyCode.backspace]
+			)
+		);
 		
 		// Création du controlleur.
 		var controller = new Controller(chrono, ui, actions);
@@ -72,4 +75,4 @@
 	// Et on met un autre chrono à disposition de l'utilisateur.
 	_addChrono();
 	
-})(chronoapp.Chrono, chronoapp.Controller, chronoapp.Ui, chronoapp.Action);
+})(chronoapp.Chrono, chronoapp.Controller, chronoapp.Ui, chronoapp.Action, chronoapp.Actions);
