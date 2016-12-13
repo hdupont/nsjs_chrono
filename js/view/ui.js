@@ -19,12 +19,8 @@ chronoapp.Ui = (function(TimeView) {
 	 * @property {HTMLElement} _startButton Le bouton qui (re-)démarre le chrono.
 	 * @property {HTMLElement} _startButton Le bouton qui met en pause le chrono.
 	 * @property {HTMLElement} _stopButton Le bouton qui arrête le chrono.
-	 * @property {HTMLElement} _minutesField La partie de l'interface qui affiche
-	 * les minutes indiquées par le chrono.
-	 * @property {HTMLElement} _secondsField La partie de l'interface qui affiche
-	 * les secondes indiquées par le chrono.
-	 * @property {HTMLElement} _secondsField La partie de l'interface qui affiche
-	 * les millisecondes indiquées par le chrono.
+	 * @property {array} _timeViews Les parties de l'interface qui
+	 * affichent le temps indiqué par le chrono.
 	 */
 	function Ui() {
 		this._actionsMenu = _buildActionsMenu(self);
@@ -32,9 +28,7 @@ chronoapp.Ui = (function(TimeView) {
 		this._pauseButton = _buildActionButton("#FFA500", "Pause", "\"Espace\" ou \"p\""); // orange;
 		this._stopButton = _buildActionButton("#f44336", "Stop", "\"Suppr\" ou \"Retour arrière\""); // rouge;
 		
-		this._bigTimeView = new TimeView("4em");
-		this._smallTimeView = new TimeView("2em");
-		this._timeViews = [this._smallTimeView, this._bigTimeView];
+		this._timeViews = [new TimeView("2em"), new TimeView("4em")];
 	}
 	
 	/**
