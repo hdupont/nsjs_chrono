@@ -1,5 +1,5 @@
 /**
- * h_chrono est le namespace du composant Chrono.
+ * h_time est le namespace du composant Chrono.
  * NOTE Son nom est préfixé d'un "h_" pour éviter le collison de nom avec l'environnement global.
  */
 var h_chrono = {};
@@ -18,12 +18,12 @@ h_chrono.Chrono = (function() {
 	/**
 	 * Construit un chrono.
 	 * 
-	 * @property {object} _chrono 
+	 * @property {object} _time 
 	 * @property {int} _intervalId
 	 * @property {function} _onChangeListener
 	 */
 	function Chrono() {
-		this._chrono = 0;
+		this._time = 0;
 		this._intervalId = null; 
 		this._onChangeListener = null;
 	}
@@ -45,7 +45,7 @@ h_chrono.Chrono = (function() {
 	};
 	Chrono.prototype.stop = function() {
 		_resetInterval(this);
-		this._chrono = 0;
+		this._time = 0;
 	};
 	Chrono.prototype.isRunning = function() {
 		return this._intervalId !== null;
@@ -58,7 +58,7 @@ h_chrono.Chrono = (function() {
 	// -------
 	
 	function _inc(self) {
-		self._chrono++;
+		self._time++;
 		self._onChangeListener(_getMinutes(self), _getSeconds(self), _getMilliseconds(self));
 	}
 	
@@ -68,15 +68,15 @@ h_chrono.Chrono = (function() {
 	}
 	
 	function _getMinutes(self) {
-		return Math.floor(self._chrono / 100 / 60);
+		return Math.floor(self._time / 100 / 60);
 	}
 	
 	function _getSeconds(self) {
-		return Math.floor(self._chrono / 100 % 60);
+		return Math.floor(self._time / 100 % 60);
 	}
 	
 	function _getMilliseconds(self) {
-		return Math.floor(self._chrono % 100);
+		return Math.floor(self._time % 100);
 	}
 	
 	return Chrono;
