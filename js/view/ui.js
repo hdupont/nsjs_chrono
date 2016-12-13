@@ -17,7 +17,7 @@ chronoapp.Ui = (function(ActionsMenu, TimeView) {
 	 * boutons pouvant déclencher une actions sur le chrono.
 	 * 
 	 * @property {object} _actionsMenu Le menu contenant les actions pouvant
-	 * être effectuée par l'utilisateur.
+	 * être effectuées par l'utilisateur.
 	 * @property {array} _timeViews Les parties de l'interface qui
 	 * affichent le temps indiqué par le chrono.
 	 */
