@@ -14,20 +14,21 @@ chronoapp.Actions = (function() {
 	 * @property {string} _chrono Le chrono sur lequel seront effectuées les
 	 * actions.
 	 */
-	function Actions(chrono, actionContext) {	
+	function Actions(chrono, actionsContext) {	
 		this._chrono = chrono;
-		this._actionContext = actionContext;
+		this._actionsContext = actionsContext;
 		this._actions = [];
 	}
 
 	Actions.prototype.addAction = function(action) {
+		action.setContext(this._actionsContext);
 		return this._actions.push(action);
 	};
 	
-	Actions.prototype.execute = function(context) {
+	Actions.prototype.execute = function() {
 		var self = this;
 		this._actions.forEach(function(action) {
-			action.execute(this._chrono, this._actionContext);
+			action.execute(thselfis._chrono, self._actionContext);
 		});
 	};
 	

@@ -21,8 +21,13 @@ chronoapp.Action = (function() {
 		this._handler = handler;
 		this._onAction = onAction;
 		this._keys = keys;
+		this._context = null;
 	}
 
+	Action.prototype.setContext = function(context) {
+		this._context = context;
+	};
+	
 	Action.prototype.getName = function() {
 		return this._name;
 	};
@@ -31,9 +36,12 @@ chronoapp.Action = (function() {
 		return this._keys;
 	};
 	
-	Action.prototype.execute = function(context) {
+	Action.prototype.execute = function() {
+		if (this._context === null || typeof this._context === "undefined") {
+			throw new Error("Action..execute - no context");
+		}
 		this._handler();
-		this._onAction(context);
+		this._onAction(this._context);
 	};
 	
 	return Action;

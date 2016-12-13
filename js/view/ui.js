@@ -96,8 +96,11 @@ chronoapp.Ui = (function(ActionsMenu, TimeView) {
 	 * @param {string} actionName Le nom d'une action.
 	 * @param {function} actionHandler Le handler correspondant à cette action.
 	 */
-	Ui.prototype.initActionTrigger = function(actionName, actionHandler) {
-		var actionButton = null;
+	Ui.prototype.initActionTrigger = function(action) {
+		var actionName = action.getName();
+		var actionHandler = function() {
+			action.execute();
+		}
 		// TODO supprimer la répétition du nom des actions
 		// Répétée ici et dans le controlleur.
 		if (actionName === "startchrono") {

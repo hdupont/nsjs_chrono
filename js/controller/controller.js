@@ -84,7 +84,7 @@ chronoapp.Controller = (function() {
 		var actionHandler = function() {
 			action.execute(self._ui);
 		};
-		self._ui.initActionTrigger(action.getName(), actionHandler);
+		self._ui.initActionTrigger(action);
 		addKeysListenerToBody(action.getKeys(), actionHandler);
 	}
 	
