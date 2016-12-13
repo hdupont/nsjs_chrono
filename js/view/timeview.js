@@ -9,6 +9,7 @@ chronoapp.TimeView = (function() {
 	
 	// public
 	// ------
+	
 	/**
 	 * Construit un élément d'interface qui affiche le temps indiqué par le
 	 * chrono. L'affichage se fait sous la forme xx:yy:zz
