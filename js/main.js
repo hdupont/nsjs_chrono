@@ -2,7 +2,7 @@
  * Programme permettant d'utiliser un chronomètre via un menu composé de boutons
  * ou avec le clavier.
  */
-(function(Chrono, ChronoController, Ui) {
+(function(Chrono, Controller, Ui) {
 	
 	/**
 	 * Assemble les éléments nécessaires (chrono, controlleur et UI) à
@@ -16,7 +16,7 @@
 		var ui = new Ui();
 		
 		// Création du controlleur.
-		var chronoController = new ChronoController(chrono, ui);		
+		var controller = new Controller(chrono, ui);		
 	}
 	
 	// On met un chrono à disposition de l'utilisateur.
@@ -25,4 +25,4 @@
 	// Et on met un autre chrono à disposition de l'utilisateur.
 	_addChrono();
 	
-})(chronoapp.Chrono, chronoapp.ChronoController, chronoapp.Ui);
+})(chronoapp.Chrono, chronoapp.Controller, chronoapp.Ui);

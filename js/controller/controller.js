@@ -1,9 +1,8 @@
 /**
  * ----------------------
- * @class ChronoController
+ * @class Controller
  * ----------------------
- * ChronoController fait fait le lien entre le chrono et l'interface
- * utilisateur.
+ * Controller fait le lien entre le chrono et l'interface utilisateur.
  * Il est prévenu des changements d'états car il a souscrit un abonnement au
  * modification du chrono (cf. chrono.addOnChangeListener).
  * Il est prévenu des actions utilistateurs au travers des déclencheurs
@@ -12,7 +11,7 @@
  * NOTE On sépare conceptuellemenet le clavier de l'interface DOM, bien
  * que les signaux du clavier nous arrive par le DOM.
  */
-chronoapp.ChronoController = (function() {
+chronoapp.Controller = (function() {
 	
 	// static
 	// ------
@@ -69,8 +68,8 @@ chronoapp.ChronoController = (function() {
 	// ------
 	
 	/**
-	 * ChronoController
-	 * 1. Construit un ChronoController
+	 * Controller
+	 * 1. Construit un Controller
 	 * 2. Abonne le controlleur au changement d'état du chrono passé en
 	 * paramètre.
 	 * 3. Initialise l'interface.
@@ -83,7 +82,7 @@ chronoapp.ChronoController = (function() {
 	 * @property {object} _chrono
 	 * @property {object} _ui 
 	 */
-	function ChronoController(chrono, ui) {		
+	function Controller(chrono, ui) {		
 		this._chrono = chrono;
 		this._ui = ui;
 		
@@ -114,7 +113,7 @@ chronoapp.ChronoController = (function() {
 	 * @param {int} seconds Le nombre de secondes indiquées par le chrono.
 	 * @param {int} milliseconds Le nombre de millisecondes indiquées par le chrono.
 	 */
-	ChronoController.prototype.update = function(minutes, seconds, milliseconds) {
+	Controller.prototype.update = function(minutes, seconds, milliseconds) {
 		this._ui.update(minutes, seconds, milliseconds);
 	};
 	
@@ -147,5 +146,5 @@ chronoapp.ChronoController = (function() {
 		addKeysListenerToBody(action.keyTriggers, actionHandler);
 	}
 	
-	return ChronoController;
+	return Controller;
 })();
