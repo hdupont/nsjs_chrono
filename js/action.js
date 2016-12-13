@@ -15,9 +15,7 @@ chronoapp.Action = (function() {
 	 * @property {string} _handler Le traitement correspondant à l'action.
 	 * @property {string} _onAction Le traitement inscrit pour être effectué à
 	 * la suite de l'action.
-	 * @property {object} _onActionContext L'objet qui sert de contexte à
-	 * l'exécution de onAction();.
-	 * NOTE _onActionContext est valorisé dans Actions lors l'ajout à la liste
+	 * NOTE _onAction s'exécute dans un contexte défini dans la liste (Actions.js).
 	 * des actions. 
 	 */
 	function Action(name, handler, onAction, keys) {	
@@ -25,17 +23,7 @@ chronoapp.Action = (function() {
 		this._handler = handler;
 		this._onAction = onAction;
 		this._keys = keys;
-		this._onActionContext = null;
 	}
-
-	/**
-	 * Valorise _onActionContext
-	 * @param {object} onActionContext L'objet qui servira de contexte à
-	 * l'exécution de onAction();
-	 */
-	Action.prototype.setOnActionContext = function(onActionContext) {
-		this._onActionContext = onActionContext;
-	};
 	
 	/**
 	 * Retourne le nom de l'action.
@@ -57,11 +45,8 @@ chronoapp.Action = (function() {
 	 * Exécute l'action puis exécute _onAction(). 
 	 */
 	Action.prototype.execute = function() {
-		if (this._onActionContext === null || typeof this._onActionContext === "undefined") {
-			throw new Error("Action..execute - no context");
-		}
 		this._handler();
-		this._onAction(this._onActionContext);
+		this._onAction();
 	};
 	
 	return Action;

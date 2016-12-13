@@ -4,7 +4,25 @@
  * --------------
  * Une Actions est une liste d'actions pouvant être effectuées sur un chrono.
  */
-chronoapp.Actions = (function() {
+chronoapp.Actions = (function(Action) {
+	
+	// static
+	// ------
+
+	/**
+	 * Les touches qui permettent d'effectuer une action sur le chrono.
+	 * NOTE En keydown les codes correspondent majuscules.
+	 * TODO mettre ça dans le keyboardtk.
+	 */
+	var _keyCode = {
+		"enter": 13,
+		"D": 68,
+		"space": 32,
+		"P": 80,
+		"K": 75,
+		"del": 46,
+		"backspace": 8
+	};
 	
 	// public
 	// ------
@@ -24,6 +42,40 @@ chronoapp.Actions = (function() {
 		this._chrono = chrono;
 		this._onActionContext = onActionContext;
 		this._actions = [];
+		
+		this.addAction(new Action(
+				"startchrono",
+				function action() {
+					chrono.start();		
+				},
+				function onAction(context) {
+					onActionContext.switchToStartState();		
+				}, 
+				[_keyCode.enter, _keyCode.D]
+			)
+		);
+		this.addAction(new Action(
+				"pausechrono",
+				function action() {
+					chrono.pause();
+				},
+				function onAction(context) {
+					onActionContext.switchToPauseState();
+				},
+				[_keyCode.space, _keyCode.P]
+			)
+		);
+		this.addAction(new Action(
+				"stopchrono",
+				function action() {
+					chrono.stop();
+				},
+				function onAction(context) {
+					onActionContext.switchToStopState();
+				},
+				[_keyCode.K, _keyCode.del, _keyCode.backspace]
+			)
+		);
 	}
 
 	/**
@@ -31,7 +83,7 @@ chronoapp.Actions = (function() {
 	 * @param {object} action L'action à ajouter à la liste.
 	 */
 	Actions.prototype.addAction = function(action) {
-		action.setOnActionContext(this._onActionContext);
+//		action.setOnActionContext(this._onActionContext);
 		return this._actions.push(action);
 	};
 	
@@ -47,4 +99,4 @@ chronoapp.Actions = (function() {
 	};
 	
 	return Actions;
-})();
+})(chronoapp.Action);
