@@ -15,6 +15,8 @@
 		// Création de l'interface utilisateur.
 		var ui = new Ui();
 		
+		// Création de la liste des actions pouvant être effectuées sur le
+		// chrono.
 		var actions = new Actions(chrono, ui);
 		
 		// Création du controlleur.
