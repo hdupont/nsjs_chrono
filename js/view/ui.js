@@ -23,6 +23,9 @@ chronoapp.Ui = (function(ActionMenu, TimeView) {
 	 */
 	function Ui() {
 		this._actionMenu = new ActionMenu();
+		
+		// NOTE Pour l'instant on affiche une petite vue (2em) et une grande
+		// vue (4em).
 		this._timeViews = [new TimeView("2em"), new TimeView("4em")];
 	}
 	
