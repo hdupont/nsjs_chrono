@@ -4,6 +4,7 @@
  * --------
  * Une TimeView est un composant graphique permettant de visualiser le temps
  * indiqué par le chrono.
+ * L'affichage se fait sous la forme xx:yy:zz
  */
 chronoapp.TimeView = (function() {
 	
@@ -12,7 +13,7 @@ chronoapp.TimeView = (function() {
 	
 	/**
 	 * Construit un élément d'interface qui affiche le temps indiqué par le
-	 * chrono. L'affichage se fait sous la forme xx:yy:zz
+	 * chrono.
 	 * @property {HTMLElement} _minutesField La partie de l'interface qui affiche
 	 * les minutes indiquées par le chrono.
 	 * @property {HTMLElement} _secondsField La partie de l'interface qui affiche
