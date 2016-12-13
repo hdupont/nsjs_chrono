@@ -3,8 +3,8 @@
  * @class Ui
  * --------
  * Une Ui est une interface web qui permet à l'utilisateur
- * 1. d'agir sur le chrono
- * 2. de voir le temps affiché par le chrono 
+ * 1. d'agir sur le chrono via un menu d'action
+ * 2. de voir le temps affiché par le chrono via un ensemble de vues.
  */
 chronoapp.Ui = (function(ActionMenu, TimeView) {
 	
@@ -16,9 +16,8 @@ chronoapp.Ui = (function(ActionMenu, TimeView) {
 	 * @property {HTMLElement} _actionsMenu La partie de l'interface contenant les
 	 * boutons pouvant déclencher une actions sur le chrono.
 	 * 
-	 * @property {HTMLElement} _startButton Le bouton qui (re-)démarre le chrono.
-	 * @property {HTMLElement} _startButton Le bouton qui met en pause le chrono.
-	 * @property {HTMLElement} _stopButton Le bouton qui arrête le chrono.
+	 * @property {object} _actionMenu Le menu contenant les actions pouvant
+	 * être effectuée par l'utilisateur.
 	 * @property {array} _timeViews Les parties de l'interface qui
 	 * affichent le temps indiqué par le chrono.
 	 */
