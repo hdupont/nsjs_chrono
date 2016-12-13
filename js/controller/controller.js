@@ -27,10 +27,6 @@ chronoapp.Controller = (function() {
 	 * @param {object} chrono Le chrono mis à disposition de l'utilisateur.
 	 * @param {object} ui L'interface qui affiche le chrono et les actions
 	 * permettant à l'utilisateur d'agir sur le chrono.
-	 * 
-	 * @property {object} _chrono
-	 * @property {object} _ui 
-	 * @property {object} _actions
 	 */
 	function Controller(chrono, ui, actions) {		
 		
