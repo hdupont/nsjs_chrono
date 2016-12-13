@@ -12,58 +12,7 @@
  * que les signaux du clavier nous arrive par le DOM.
  */
 chronoapp.Controller = (function() {
-	
-	// static
-	// ------
-
-	/**
-	 * Les touches qui permettent d'effectuer une action sur le chrono.
-	 * NOTE En keydown les codes correspondent majuscules.
-	 * TODO mettre ça dans le keyboardtk.
-	 */
-	var _keyCode = {
-		"enter": 13,
-		"D": 68,
-		"space": 32,
-		"P": 80,
-		"K": 75,
-		"del": 46,
-		"backspace": 8
-	};
-	
-	/**
-	 * Les actions pouvant être effectuée sur le chrono.
-	 */
-	var _actions = [
-		// Démarre le chrono
-		{
-			name: "startchrono",
-			handler: function(self) {
-				self._chrono.start();
-				self._ui.switchToStartState();		
-			},
-			keyTriggers: [_keyCode.enter, _keyCode.D]
-		},
-		// Met le chrono en pause.
-		{
-			name:"pausechrono",
-			handler: function(self) {
-				self._chrono.pause();
-				self._ui.switchToPauseState();
-			},
-			keyTriggers: [_keyCode.space, _keyCode.P]
-		},
-		// Arrête le chrono.
-		{
-			name: "stopchrono",
-			handler: function stopChrono(self) {
-				self._chrono.stop();
-				self._ui.switchToStopState();
-			},
-			keyTriggers: [_keyCode.K, _keyCode.del, _keyCode.backspace]
-		}
-	];
-	
+		
 	// public
 	// ------
 	
@@ -81,8 +30,9 @@ chronoapp.Controller = (function() {
 	 * 
 	 * @property {object} _chrono
 	 * @property {object} _ui 
+	 * @property {object} _actions
 	 */
-	function Controller(chrono, ui) {		
+	function Controller(chrono, ui, actions) {		
 		this._chrono = chrono;
 		this._ui = ui;
 		
@@ -90,13 +40,15 @@ chronoapp.Controller = (function() {
 		// NOTE On place l'appelle dans une fonction anonyme pour conserver le
 		// bon contexte à l'exécution.
 		var self = this;
+		
+		// On abonne l'UI aux changements d'état du chrono.
 		chrono.addOnChangeListener(function(minutes, secondes, millisecondes) {
-			self.update(minutes, secondes, millisecondes);
+			ui.update(minutes, secondes, millisecondes);
 		});
 		
 		// On initialise les éléments de l'UI pouvant déclencher une action sur
 		// le chrono.
-		_actions.forEach(function(action) {
+		actions.forEach(function(action) {
 			_initUiActionTrigger(self, action);
 		});
 
@@ -106,16 +58,6 @@ chronoapp.Controller = (function() {
 		// On ajoute l'interface utilisateur au DOM.
 		ui.appendToDom("chrnapp")
 	}
-	
-	/**
-	 * Met à jour l'interface utilisateur à chaque changement d'état du chrono.
-	 * @param {int} minutes Le nombre de minutes indiquées par le chrono.
-	 * @param {int} seconds Le nombre de secondes indiquées par le chrono.
-	 * @param {int} milliseconds Le nombre de millisecondes indiquées par le chrono.
-	 */
-	Controller.prototype.update = function(minutes, seconds, milliseconds) {
-		this._ui.update(minutes, seconds, milliseconds);
-	};
 	
 	// private
 	// -------
@@ -140,10 +82,10 @@ chronoapp.Controller = (function() {
 		}
 		
 		var actionHandler = function() {
-			action.handler(self);
+			action.execute(self._ui);
 		};
-		self._ui.initActionTrigger(action.name, actionHandler);
-		addKeysListenerToBody(action.keyTriggers, actionHandler);
+		self._ui.initActionTrigger(action.getName(), actionHandler);
+		addKeysListenerToBody(action.getKeys(), actionHandler);
 	}
 	
 	return Controller;

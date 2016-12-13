@@ -1,7 +1,7 @@
 /**
- * --------
+ * ---------------
  * @class TimeView
- * --------
+ * ---------------
  * Une TimeView est un composant graphique permettant de visualiser le temps
  * indiqué par le chrono.
  * L'affichage se fait sous la forme xx:yy:zz
