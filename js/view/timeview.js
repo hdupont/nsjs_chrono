@@ -19,6 +19,8 @@ chronoapp.TimeView = (function() {
 	 * les secondes indiquées par le chrono.
 	 * @property {HTMLElement} _secondsField La partie de l'interface qui affiche
 	 * les millisecondes indiquées par le chrono.
+	 * @property {string} _fontSize La taille de la fonte avec laquelle sera
+	 * affichée la TimeView.
 	 */
 	function TimeView(fontSize) {	
 		this._minutesField = _buildChronoField();
