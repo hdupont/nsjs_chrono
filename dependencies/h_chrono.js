@@ -1,15 +1,27 @@
-// namespace du composant Chrono
+/**
+ * h_chrono est le namespace du composant Chrono.
+ * NOTE Son nom est préfixé d'un "h_" pour éviter le collison de nom avec l'environnement global.
+ */
 var h_chrono = {};
 
-//---------------
-//class Chrono
-//---------------
-//Un Chrono est chronomètre pouvant indiquer minutes, secondes et millisecondes.
+/**
+ * -------------
+ * @class Chrono 
+ * -------------
+ * Un Chrono est chronomètre pouvant indiquer minutes, secondes et millisecondes. 
+ */
 h_chrono.Chrono = (function() {
 	
 	// public
 	// ------
 	
+	/**
+	 * Construit un chrono.
+	 * 
+	 * @property {object} _chrono 
+	 * @property {int} _intervalId
+	 * @property {function} _onChangeListener
+	 */
 	function Chrono() {
 		this._chrono = 0;
 		this._intervalId = null; 
